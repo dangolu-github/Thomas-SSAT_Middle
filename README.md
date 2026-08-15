@@ -4,7 +4,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 
 ## Current state
 
-- Learner-safe source is maintained inside the private `teaching_projects_workbase` repository and published through its dedicated GitHub Pages workflow.
+- Learner-safe source is maintained inside the private `teaching_projects_workbase` repository and published from the public learner-only `Thomas-SSAT_Middle` deployment mirror.
 - The Trial Class handout, six-question Reading follow-up, and first 30-question Synonym/Analogy homework are the current release unit.
 - Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
