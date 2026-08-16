@@ -157,6 +157,16 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
 .check-item input { width: 19px; height: 19px; margin: 3px 0 0; accent-color: var(--accent); }
 .check-item strong, .check-item span { display: block; }
 .check-item span { color: var(--muted); font-size: 14px; }
+.session-list { display: grid; gap: 16px; }
+.session-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-strong); }
+.session-card .check-item { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--surface-muted); }
+.session-card .check-item small { display: block; margin-bottom: 5px; color: var(--muted); font-weight: 750; }
+.task-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0; margin: 0; }
+.task-list div { padding: 14px 16px; border-top: 1px solid var(--line); }
+.task-list div:nth-child(-n+2) { border-top: 0; }
+.task-list div:nth-child(even) { border-left: 1px solid var(--line); }
+.task-list dt { margin-bottom: 4px; color: var(--accent-strong); font-size: 13px; font-weight: 850; }
+.task-list dd { margin: 0; color: var(--text); font-size: 14px; }
 
 @media (hover: hover) {
   .lane-card, .button, .icon-button, .section-toggle, .text-button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease, color .18s ease; }
@@ -193,6 +203,10 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .planner-toolbar { position: static; grid-template-columns: 1fr; }
   .planner-actions { justify-content: flex-start; }
   .planner-status { grid-column: 1; }
+  .task-list { grid-template-columns: 1fr; }
+  .task-list div:nth-child(-n+2) { border-top: 1px solid var(--line); }
+  .task-list div:first-child { border-top: 0; }
+  .task-list div:nth-child(even) { border-left: 0; }
   .practice-modes article:last-child { grid-column: auto; }
   .site-footer { align-items: flex-start; flex-direction: column; padding: 20px; }
 }

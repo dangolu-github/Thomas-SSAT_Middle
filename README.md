@@ -7,6 +7,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - Learner-safe source is maintained inside the private `teaching_projects_workbase` repository and published from the public learner-only `Thomas-SSAT_Middle` deployment mirror.
 - The Trial Class handout, six-question Reading follow-up, and first 30-question Synonym/Analogy homework are the current release unit.
 - Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
+- The Chinese-first parent planner contains 30 dated sessions through the 2026-10-23 exam. Every checkbox is saved locally and synchronized as planner progress to the Thomas-only service.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
 
 ## Information architecture
@@ -15,7 +16,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - `learning/`: Reading, Verbal, and Writing Sample system.
 - `practice/`: active assignments, timed checks, and mock routes.
 - `review/`: checked review and retry route.
-- `planner/`: provisional ten-week, thirty-slot review plan with device-local checkmarks.
+- `planner/`: ten-week, thirty-session Chinese parent plan with exact tasks, dates, and synchronized checkmarks.
 - `assets/`: shared visual tokens and interaction behavior.
 
 The structure mirrors the approved SAT portal information architecture, but all Thomas content, IDs, state, and services remain independent.

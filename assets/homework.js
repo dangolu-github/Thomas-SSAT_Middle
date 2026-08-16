@@ -58,6 +58,11 @@
     if (status) status.textContent = message;
   }
 
+  function formatReceipt(value) {
+    var parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? '已记录' : parsed.toLocaleString('zh-CN');
+  }
+
   function restore() {
     var state = readState();
     assignment.items.forEach(function (item) {
@@ -100,13 +105,13 @@
 
   function saveDraft(silent) {
     var answers = persistLocal(false, '');
-    if (!silent) showStatus('Saved on this device. Saving securely…');
+    if (!silent) showStatus('正在保存…');
     return send('saveDraft', answers).then(function (result) {
-      if (result.ok) showStatus('Progress saved securely · ' + answeredCount(answers) + ' / ' + assignment.items.length + ' answered.');
-      else if (!silent) showStatus('Saved on this device. Online save is temporarily unavailable.');
+      if (result.ok) showStatus('进度已保存 · 已完成 ' + answeredCount(answers) + ' / ' + assignment.items.length + ' 题。');
+      else if (!silent) showStatus('已保存，网络恢复后会再次同步。');
       return result;
     }).catch(function () {
-      if (!silent) showStatus('Saved on this device. Online save will retry after your next change.');
+      if (!silent) showStatus('已保存，网络恢复后会再次同步。');
       return { ok: false };
     });
   }
@@ -118,14 +123,14 @@
     document.querySelectorAll('.question-card').forEach(function (card) { card.setAttribute('aria-disabled', 'true'); });
     if (submitButton) submitButton.disabled = true;
     if (saveButton) saveButton.disabled = true;
-    if (receipt) receipt.textContent = 'Submitted · receipt ' + receiptTime;
-    showStatus('Final submission recorded. Answers remain with the teacher for checking.');
+    if (receipt) receipt.textContent = '已提交 · ' + formatReceipt(receiptTime);
+    showStatus('作业已成功提交。');
   }
 
   document.querySelectorAll('[data-assignment-form] input, [data-assignment-form] textarea').forEach(function (control) {
     control.addEventListener('change', function () {
       persistLocal(false, '');
-      showStatus('Draft changed. Saved on this device.');
+      showStatus('答案已更新，正在保存…');
       window.clearTimeout(saveTimer);
       saveTimer = window.setTimeout(function () { saveDraft(true); }, 700);
     });
@@ -136,19 +141,19 @@
   if (submitButton) submitButton.addEventListener('click', function () {
     var answers = collectState();
     var count = answeredCount(answers);
-    if (count < assignment.items.length && !window.confirm('You answered ' + count + ' of ' + assignment.items.length + '. Submit with blanks?')) return;
+    if (count < assignment.items.length && !window.confirm('目前完成 ' + count + ' / ' + assignment.items.length + ' 题，仍要提交吗？')) return;
     submitButton.disabled = true;
-    showStatus('Submitting…');
+    showStatus('正在提交…');
     send('submit', answers).then(function (result) {
       if (!result.ok) throw new Error(result.error || 'Submit failed');
       persistLocal(true, result.receiptTime || 'Recorded');
       lockSubmitted(result.receiptTime || 'Recorded');
     }).catch(function () {
       submitButton.disabled = false;
-      showStatus('Submission not received. Your draft remains saved; try again.');
+      showStatus('暂时未能提交，答案已经保存，请稍后再试。');
     });
   });
 
   restore();
-  if (!readState().submitted) showStatus('Draft saves on this device and securely after each change. Use Final submit when finished.');
+  if (!readState().submitted) showStatus('答案会在每次修改后自动保存；全部完成后请点击“提交作业”。');
 }());
