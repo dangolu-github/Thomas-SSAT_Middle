@@ -155,22 +155,26 @@
     if (!planner || !container) return;
     var number = 0;
     container.innerHTML = planner.weeks.map(function (week, weekIndex) {
-      var guide = planner.weeklyGuides && planner.weeklyGuides[weekIndex] ? planner.weeklyGuides[weekIndex] : {};
+      var focus = planner.weeklyFocus && planner.weeklyFocus[weekIndex] ? planner.weeklyFocus[weekIndex] : {};
       var sessions = week.sessions.map(function (session) {
         number += 1;
         var taskState = planner.taskStates && planner.taskStates[session.id] ? planner.taskStates[session.id] : {
-          state: '暂未布置', tone: 'pending', checkable: false, detail: '该项为后续教学计划；收到对应练习或课程通知后再完成下方准备。'
+          state: '暂未布置', tone: 'pending', checkable: false, detail: '目前没有布置学生任务。'
         };
         var disabled = taskState.checkable ? '' : ' disabled aria-disabled="true"';
         return '<article class="session-card"><label class="check-item" for="' + escapeHtml(session.id) + '">' +
           '<input id="' + escapeHtml(session.id) + '" type="checkbox" data-planner-item' + disabled + '>' +
           '<span><small>Class ' + String(number).padStart(2, '0') + ' · ' + escapeHtml(session.date) + '</small><strong>' + escapeHtml(session.type) + '｜' + escapeHtml(session.title) + '</strong></span></label>' +
-          '<div class="session-state"><span class="status-pill status-' + escapeHtml(taskState.tone) + '">' + escapeHtml(taskState.state) + '</span><p>' + escapeHtml(taskState.detail) + '</p></div>' +
-          '<dl class="task-list"><div><dt>课前准备</dt><dd>' + escapeHtml(session.before) + '</dd></div><div><dt>本课重点</dt><dd>' + escapeHtml(session.focus) + '</dd></div><div><dt>计划课后任务（当前未布置）</dt><dd>' + escapeHtml(session.after) + '</dd></div><div><dt>自查重点</dt><dd>' + escapeHtml(session.selfCheck) + '</dd></div></dl></article>';
+          '<ul class="session-bullets"><li><strong>状态：</strong><span class="status-pill status-' + escapeHtml(taskState.tone) + '">' + escapeHtml(taskState.state) + '</span> ' + escapeHtml(taskState.detail) + '</li>' +
+          '<li><strong>课堂重点：</strong>' + escapeHtml(session.focus) + '</li></ul></article>';
       }).join('');
-      var weeklyGuide = '<dl class="weekly-guide"><div><dt>本周阅读任务 <span class="status-pill status-' + escapeHtml(guide.readingTone || 'pending') + '">' + escapeHtml(guide.readingState || '暂未布置') + '</span></dt><dd>' + escapeHtml(guide.readingTask || '本周无额外阅读任务。') + '</dd></div>' +
-        '<div><dt>生词本整理</dt><dd><strong>' + escapeHtml(guide.vocabDays || '本周任选1–2天') + '</strong>，每次15–20分钟。把本周课堂、作业和阅读中所有不认识或不确定的词加入生词本；每词记录 word、part of speech、中文核心义、原句和自己的短语。第二次整理时去重并复习。</dd></div></dl>';
-      return '<section class="week-card"><header><p class="eyebrow">' + escapeHtml(week.label) + '</p><h2>' + escapeHtml(week.title) + '</h2><p>' + escapeHtml(week.note) + '</p></header>' + weeklyGuide + '<div class="session-list">' + sessions + '</div></section>';
+      var weeklyFocus = '<section class="weekly-focus"><h3>本周重点</h3><ul class="focus-list">' +
+        '<li><strong>词汇重点：</strong>' + escapeHtml(focus.vocabulary || '根据课堂情况确定。') + '</li>' +
+        '<li><strong>Reading 重点：</strong>' + escapeHtml(focus.reading || '根据课堂情况确定。') + '</li>' +
+        '<li><strong>Verbal 重点：</strong>' + escapeHtml(focus.verbal || '根据课堂情况确定。') + '</li>' +
+        '<li><strong>复盘重点：</strong>' + escapeHtml(focus.review || '根据本周练习情况确定。') + '</li></ul></section>' +
+        '<section class="weekly-routine"><h3>本周固定安排</h3><ul><li><strong>生词本：</strong>' + escapeHtml(focus.vocabDays || '本周任选1–2天') + '。把本周课堂和已布置作业中所有不认识或不确定的词加入生词本；第二次整理时去重。</li></ul></section>';
+      return '<section class="week-card"><header><p class="eyebrow">' + escapeHtml(week.label) + '</p><h2>' + escapeHtml(week.title) + '</h2><p>' + escapeHtml(week.note) + '</p></header>' + weeklyFocus + '<div class="session-list">' + sessions + '</div></section>';
     }).join('');
   }
 
@@ -222,8 +226,8 @@
       localStorage.setItem(plannerKey, JSON.stringify(checkedIds));
       if (!silent) renderStatus('正在保存…');
       return sendProgress(checkedIds).then(function (result) {
-        renderStatus(result.ok ? '进度已保存 · 已完成 ' + checkedIds.length + ' / ' + items.length : '已保存在当前设备，稍后会再次同步。');
-      }).catch(function () { renderStatus('已保存在当前设备，稍后会再次同步。'); });
+        renderStatus(result.ok ? '进度已保存 · 已完成 ' + checkedIds.length + ' / ' + items.length : '进度已保存在当前设备。');
+      }).catch(function () { renderStatus('进度已保存在当前设备。'); });
     }
 
     items.forEach(function (item) {

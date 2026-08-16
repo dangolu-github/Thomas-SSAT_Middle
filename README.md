@@ -9,7 +9,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - Trial Class records and homework show `Week 0`, `Class 00`, and the evidence-safe course-date value `待确认` until the actual lesson date is confirmed.
 - Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
 - The Chinese-first self-study planner contains 30 dated sessions through the 2026-10-23 exam. Every checkbox is saved locally and synchronized as planner progress to the Thomas-only service.
-- Planner tasks distinguish `已布置`, `暂未布置`, and `课堂安排`; future checkboxes stay disabled until the linked work is released. Every week includes a scoped Reading task and two dated vocabulary-notebook sessions tied to actual class and homework words.
+- Planner items distinguish `已布置`, `暂未布置`, and `课堂安排`; future checkboxes stay disabled until linked work is actually released. Every week presents Vocabulary, Reading, Verbal, and review focuses as bullet points, plus two dated vocabulary-notebook sessions. Only explicitly assigned work appears as a learner task.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
 
 ## Information architecture
@@ -18,7 +18,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - `learning/`: Reading, Verbal, and Writing Sample system.
 - `practice/`: active assignments, timed checks, and mock routes.
 - `review/`: checked review and retry route.
-- `planner/`: ten-week, thirty-session Chinese self-study plan with exact tasks, dates, and synchronized checkmarks.
+- `planner/`: ten-week, thirty-session Chinese self-study plan with weekly focus bullets, dated vocabulary routines, explicit assignment states, and synchronized checkmarks.
 - `assets/`: shared visual tokens and interaction behavior.
 
 The structure mirrors the approved SAT portal information architecture, but all Thomas content, IDs, state, and services remain independent.

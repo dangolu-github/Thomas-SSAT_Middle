@@ -108,10 +108,10 @@
     if (!silent) showStatus('正在保存…');
     return send('saveDraft', answers).then(function (result) {
       if (result.ok) showStatus('进度已保存 · 已完成 ' + answeredCount(answers) + ' / ' + assignment.items.length + ' 题。');
-      else if (!silent) showStatus('已保存，网络恢复后会再次同步。');
+      else if (!silent) showStatus('已保存在当前设备，可继续作答。');
       return result;
     }).catch(function () {
-      if (!silent) showStatus('已保存，网络恢复后会再次同步。');
+      if (!silent) showStatus('已保存在当前设备，可继续作答。');
       return { ok: false };
     });
   }
