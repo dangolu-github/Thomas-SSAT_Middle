@@ -9,6 +9,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - Trial Class records and homework show `Week 0`, `Class 00`, and the evidence-safe course-date value `待确认` until the actual lesson date is confirmed.
 - Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
 - The Chinese-first self-study planner contains 30 dated sessions through the 2026-10-23 exam. Every checkbox is saved locally and synchronized as planner progress to the Thomas-only service.
+- Planner tasks distinguish `已布置`, `暂未布置`, and `课堂安排`; future checkboxes stay disabled until the linked work is released. Every week includes a scoped Reading task and two dated vocabulary-notebook sessions tied to actual class and homework words.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
 
 ## Information architecture

@@ -154,15 +154,23 @@
     var container = document.querySelector('[data-planner-weeks]');
     if (!planner || !container) return;
     var number = 0;
-    container.innerHTML = planner.weeks.map(function (week) {
+    container.innerHTML = planner.weeks.map(function (week, weekIndex) {
+      var guide = planner.weeklyGuides && planner.weeklyGuides[weekIndex] ? planner.weeklyGuides[weekIndex] : {};
       var sessions = week.sessions.map(function (session) {
         number += 1;
+        var taskState = planner.taskStates && planner.taskStates[session.id] ? planner.taskStates[session.id] : {
+          state: '暂未布置', tone: 'pending', checkable: false, detail: '该项为后续教学计划；收到对应练习或课程通知后再完成下方准备。'
+        };
+        var disabled = taskState.checkable ? '' : ' disabled aria-disabled="true"';
         return '<article class="session-card"><label class="check-item" for="' + escapeHtml(session.id) + '">' +
-          '<input id="' + escapeHtml(session.id) + '" type="checkbox" data-planner-item>' +
+          '<input id="' + escapeHtml(session.id) + '" type="checkbox" data-planner-item' + disabled + '>' +
           '<span><small>Class ' + String(number).padStart(2, '0') + ' · ' + escapeHtml(session.date) + '</small><strong>' + escapeHtml(session.type) + '｜' + escapeHtml(session.title) + '</strong></span></label>' +
-          '<dl class="task-list"><div><dt>课前准备</dt><dd>' + escapeHtml(session.before) + '</dd></div><div><dt>本课重点</dt><dd>' + escapeHtml(session.focus) + '</dd></div><div><dt>课后任务</dt><dd>' + escapeHtml(session.after) + '</dd></div><div><dt>自查重点</dt><dd>' + escapeHtml(session.selfCheck) + '</dd></div></dl></article>';
+          '<div class="session-state"><span class="status-pill status-' + escapeHtml(taskState.tone) + '">' + escapeHtml(taskState.state) + '</span><p>' + escapeHtml(taskState.detail) + '</p></div>' +
+          '<dl class="task-list"><div><dt>课前准备</dt><dd>' + escapeHtml(session.before) + '</dd></div><div><dt>本课重点</dt><dd>' + escapeHtml(session.focus) + '</dd></div><div><dt>计划课后任务（当前未布置）</dt><dd>' + escapeHtml(session.after) + '</dd></div><div><dt>自查重点</dt><dd>' + escapeHtml(session.selfCheck) + '</dd></div></dl></article>';
       }).join('');
-      return '<section class="week-card"><header><p class="eyebrow">' + escapeHtml(week.label) + '</p><h2>' + escapeHtml(week.title) + '</h2><p>' + escapeHtml(week.note) + '</p></header><div class="session-list">' + sessions + '</div></section>';
+      var weeklyGuide = '<dl class="weekly-guide"><div><dt>本周阅读任务 <span class="status-pill status-' + escapeHtml(guide.readingTone || 'pending') + '">' + escapeHtml(guide.readingState || '暂未布置') + '</span></dt><dd>' + escapeHtml(guide.readingTask || '本周无额外阅读任务。') + '</dd></div>' +
+        '<div><dt>生词本整理</dt><dd><strong>' + escapeHtml(guide.vocabDays || '本周任选1–2天') + '</strong>，每次15–20分钟。把本周课堂、作业和阅读中所有不认识或不确定的词加入生词本；每词记录 word、part of speech、中文核心义、原句和自己的短语。第二次整理时去重并复习。</dd></div></dl>';
+      return '<section class="week-card"><header><p class="eyebrow">' + escapeHtml(week.label) + '</p><h2>' + escapeHtml(week.title) + '</h2><p>' + escapeHtml(week.note) + '</p></header>' + weeklyGuide + '<div class="session-list">' + sessions + '</div></section>';
     }).join('');
   }
 
@@ -178,7 +186,7 @@
 
     var saved = readPlannerState();
     var saveTimer = null;
-    items.forEach(function (item) { item.checked = saved.indexOf(item.id) !== -1; });
+    items.forEach(function (item) { item.checked = !item.disabled && saved.indexOf(item.id) !== -1; });
 
     function renderStatus(message) {
       var checked = items.filter(function (item) { return item.checked; }).length;
