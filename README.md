@@ -6,6 +6,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 
 - Learner-safe source is maintained inside the private `teaching_projects_workbase` repository and published from the public learner-only `Thomas-SSAT_Middle` deployment mirror.
 - The completed Trial Class handout, learner-facing class log, class review, six-question Reading follow-up, and first 30-question Synonym/Analogy homework are the current release unit.
+- Trial Class records and homework show `Week 0`, `Class 00`, and the evidence-safe course-date value `待确认` until the actual lesson date is confirmed.
 - Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
 - The Chinese-first self-study planner contains 30 dated sessions through the 2026-10-23 exam. Every checkbox is saved locally and synchronized as planner progress to the Thomas-only service.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.

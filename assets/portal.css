@@ -115,6 +115,10 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
 .page-intro { max-width: 760px; margin-bottom: 42px; }
 .page-intro h1 { font-size: clamp(38px, 6vw, 66px); }
 .page-intro > p:not(.eyebrow) { max-width: 65ch; margin-top: 20px; color: var(--muted); font-size: 18px; }
+.class-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 22px 0 0; }
+.class-meta div { padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-strong); }
+.class-meta dt { margin: 0 0 4px; color: var(--muted); font-size: 12px; font-weight: 800; }
+.class-meta dd { margin: 0; color: var(--text); font-size: 14px; font-weight: 850; }
 .anchor-nav { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 34px; }
 .anchor-nav a { padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-strong); color: var(--accent); text-decoration: none; font-weight: 750; }
 .learning-lane { scroll-margin-top: 24px; display: grid; grid-template-columns: minmax(240px, .85fr) minmax(240px, 1.15fr); gap: 24px 46px; margin: 0 0 18px; padding: 32px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface-strong); }
@@ -199,6 +203,7 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .section-toggle { align-self: start; }
   .lane-card, .empty-state, .split-section article, .learning-lane, .practice-modes article, .review-routine { padding: 22px; }
   .practice-modes, .review-routine ol { grid-template-columns: 1fr; }
+  .class-meta { grid-template-columns: 1fr; }
   .week-grid { grid-template-columns: 1fr; }
   .planner-toolbar { position: static; grid-template-columns: 1fr; }
   .planner-actions { justify-content: flex-start; }
