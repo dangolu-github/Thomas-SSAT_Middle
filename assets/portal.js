@@ -160,7 +160,7 @@
         return '<article class="session-card"><label class="check-item" for="' + escapeHtml(session.id) + '">' +
           '<input id="' + escapeHtml(session.id) + '" type="checkbox" data-planner-item>' +
           '<span><small>Class ' + String(number).padStart(2, '0') + ' · ' + escapeHtml(session.date) + '</small><strong>' + escapeHtml(session.type) + '｜' + escapeHtml(session.title) + '</strong></span></label>' +
-          '<dl class="task-list"><div><dt>课前准备</dt><dd>' + escapeHtml(session.before) + '</dd></div><div><dt>本课重点</dt><dd>' + escapeHtml(session.focus) + '</dd></div><div><dt>课后任务</dt><dd>' + escapeHtml(session.after) + '</dd></div><div><dt>家长协助</dt><dd>' + escapeHtml(session.parent) + '</dd></div></dl></article>';
+          '<dl class="task-list"><div><dt>课前准备</dt><dd>' + escapeHtml(session.before) + '</dd></div><div><dt>本课重点</dt><dd>' + escapeHtml(session.focus) + '</dd></div><div><dt>课后任务</dt><dd>' + escapeHtml(session.after) + '</dd></div><div><dt>自查重点</dt><dd>' + escapeHtml(session.selfCheck) + '</dd></div></dl></article>';
       }).join('');
       return '<section class="week-card"><header><p class="eyebrow">' + escapeHtml(week.label) + '</p><h2>' + escapeHtml(week.title) + '</h2><p>' + escapeHtml(week.note) + '</p></header><div class="session-list">' + sessions + '</div></section>';
     }).join('');
