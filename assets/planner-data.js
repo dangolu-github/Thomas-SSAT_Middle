@@ -29,6 +29,8 @@
         tasks: [
           task('ss-vocab-0820', '8月20日 周四 · 20:00', '生词本', '录入 8月19日 Verbal 课堂生词', 'scheduled', ['加入课堂中不认识或不确定的词。', '只处理这次课堂内容。']),
           task('ss-read-road-0821', '8月21日 周五 · 20:00', 'Reading Skill Booster', 'The Road Not Taken · 全诗', 'scheduled', ['阅读指定页面。', '关注 speaker、imagery、choice、ambiguity、tone。', '标出不认识或不确定的词；不要求逐段笔记。'], '../learning/reading-booster/#ss-read-road-0821'),
+          task('ss-c01-verbal-open', '无截止时间 · 可补做', 'Verbal 作业', 'Class 01 · Choice, Judgment, and Responsibility', 'assigned', ['完成 Synonyms Q1–15。', '完成 Analogies Q1–15。', '预计 30 分钟；在作业页面提交。', '将不认识或不确定的词加入生词本。'], '../practice/class-01-verbal/'),
+          task('ss-c01-reading-open', '无截止时间 · 可补做', 'Reading 作业', 'Class 01 · The Shortcut at the Exhibit', 'assigned', ['阅读全文并完成 Q1–Q10。', '预计 25 分钟；在作业页面提交。', '将不认识或不确定的词加入生词本。'], '../practice/class-01-reading/'),
           task('ss-hm-verbal-syn-0821', '8月21日 周五 · 20:00', 'Verbal 作业', 'Verbal Homework 1 · Synonyms Q1–15', 'assigned', ['完成 Q1–15。', '本次保存进度；Q16–30 完成后再提交整份作业。'], '../practice/verbal-homework-1/'),
           task('ss-vocab-0823', '8月23日 周日 · 18:00', '生词本', '录入 8月22日 Reading 与诗歌生词', 'scheduled', ['合并课堂与本周指定阅读中的生词。', '删除重复词。']),
           task('ss-vocab-0824', '8月24日 周一 · 20:00', '生词本', '录入 8月23日复盘课生词', 'scheduled', ['加入复盘课中仍不确定的词。', '与本周已有词条去重。']),

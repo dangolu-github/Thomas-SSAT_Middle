@@ -7,6 +7,7 @@
   assignment.items.forEach(function (item, index) {
     var card = document.createElement('article');
     card.className = 'question-card';
+    card.dataset.itemId = item.id;
     var heading = document.createElement('h2');
     heading.textContent = (index + 1) + '. ' + item.prompt;
     var label = document.createElement('p');

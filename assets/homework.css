@@ -41,6 +41,8 @@
 .evidence-field { width: 100%; min-height: 78px; margin-top: 16px; padding: 12px; resize: vertical; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; }
 .submission-receipt { margin: 0; color: var(--accent-strong); font-weight: 800; }
 .question-card[aria-disabled="true"] { opacity: .8; }
+.question-card.correction-required { border-color: #1269b0; box-shadow: 0 0 0 3px color-mix(in srgb, #1269b0 16%, transparent); }
+.question-card.correction-required::before { content: "需要改错"; display: inline-block; margin-bottom: 10px; padding: 4px 9px; border-radius: 999px; background: #e6f2ff; color: #0d5e9e; font-size: 12px; font-weight: 850; }
 .mock-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 20px 0 0; }
 .mock-meta div { padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-strong); }
 .mock-meta dt { color: var(--muted); font-size: 12px; font-weight: 800; }

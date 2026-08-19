@@ -5,11 +5,11 @@ Learner portal for Thomas's Middle Level SSAT course.
 ## Current state
 
 - Learner-safe source is maintained inside the private `teaching_projects_workbase` repository and published from the public learner-only `Thomas-SSAT_Middle` deployment mirror.
-- The completed Trial Class handout, learner-facing class log, class review, six-question Reading follow-up, and first 30-question Synonym/Analogy homework are the current release unit.
+- The current release includes the completed Trial Class unit and Class 01 (2026-08-19): the taught-boundary handout, Chinese class summary, 30-question thematic Verbal homework, and ten-question `The Shortcut at the Exhibit` Reading homework.
 - Trial Class records and homework show `Week 0`, `Class 00`, and the evidence-safe course-date value `待确认` until the actual lesson date is confirmed.
-- Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness.
-- The Chinese-first self-study planner contains 68 dated actions through the 2026-10-23 exam. Its 56 available checkboxes cover assigned/scheduled reading, vocabulary, homework, Mock, mistake review, and exam preparation; 12 future/conditional tasks remain disabled.
-- Planner items distinguish `当前已布置`, `已安排`, `待发布`, and `按错题开放`. Every action has an exact due time and bullet-point requirements.
+- Homework drafts and deliberate final submissions use a Thomas-only Apps Script service. The service does not return answers or correctness. When correction is enabled, the first submission remains immutable and correction is stored as a separate attempt.
+- The Chinese-first self-study planner contains the course-linked actions through the 2026-10-23 exam. The two Class 01 assignments have no deadline and remain available for later completion; other scheduled actions retain their stated dates.
+- Planner items distinguish `当前已布置`, `已安排`, `待发布`, and `按错题开放`. Each action has bullet-point requirements; tasks may either have an exact due time or be explicitly marked as having no deadline.
 - Reading Skill Booster provides nine exact reading assignments plus one exam-week concept review without copying protected text.
 - Three Reading + Verbal Mock answer sheets provide 40/30-minute timers and deliberate final submission. Public files contain no questions or keys.
 - Final homework and Mock submissions generate minimal learner-visible wrong/omitted records. The private Teacher Portal retains choices and keys; cognitive causes remain `待确认` until selected.
