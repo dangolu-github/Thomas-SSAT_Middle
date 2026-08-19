@@ -11,6 +11,7 @@
   var status = document.querySelector('[data-assignment-status]');
   var receipt = document.querySelector('[data-submission-receipt]');
   var saveTimer = null;
+  var sourceIndexKey = 'thomas-ssat-submission-sources-v1';
 
   function makeSaveId() {
     if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
@@ -24,6 +25,14 @@
       localStorage.setItem(saveIdKey, value);
     }
     return value;
+  }
+
+  function registerSource() {
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(sourceIndexKey) || '[]'); } catch (error) {}
+    if (!Array.isArray(list)) list = [];
+    if (!list.some(function (item) { return item.assignmentId === assignment.id && item.saveId === saveId(); })) list.push({ assignmentId: assignment.id, saveId: saveId() });
+    localStorage.setItem(sourceIndexKey, JSON.stringify(list.slice(-20)));
   }
 
   function readState() {
@@ -147,6 +156,8 @@
     send('submit', answers).then(function (result) {
       if (!result.ok) throw new Error(result.error || 'Submit failed');
       persistLocal(true, result.receiptTime || 'Recorded');
+      registerSource();
+      if (window.ThomasSelfStudy && assignment.taskId) window.ThomasSelfStudy.markComplete(assignment.taskId);
       lockSubmitted(result.receiptTime || 'Recorded');
     }).catch(function () {
       submitButton.disabled = false;

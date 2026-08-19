@@ -1,5 +1,6 @@
 window.THOMAS_ASSIGNMENT = {
   id: 'THO-SSAT-TRIAL-VERBAL-HM01',
+  taskId: 'ss-hm-verbal-submit-0827',
   endpoint: 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec',
   items: [
     { id: 'syn-01', section: 'Synonym', prompt: 'RESILIENT:', options: ['hardy', 'brittle', 'rigid', 'ordinary', 'hidden'] },

@@ -1,5 +1,6 @@
 window.THOMAS_ASSIGNMENT = {
   id: 'THO-SSAT-TRIAL-READING-HM01',
+  taskId: 'ss-hm-reading-0825',
   endpoint: 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec',
   items: [
     { id: 'read-03', section: 'Reading 1 · Text Structure', prompt: 'The third paragraph mainly serves to', evidenceLabel: 'Copy the sentence or paragraph job that proves your choice.', options: ['describe the construction of the community observatory.', 'show that local businesses refused to change their lighting.', 'introduce the problem that migrating birds face at night.', 'argue that clouds are the town\'s only important source of glare.', 'acknowledge remaining limits and describe the town\'s next steps.'] },

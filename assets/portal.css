@@ -174,8 +174,23 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
 .session-bullets .status-pill { margin: 0 4px; }
 .status-pill { display: inline-flex; flex: 0 0 auto; align-items: center; min-height: 24px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; font-size: 11px; font-weight: 900; white-space: nowrap; }
 .status-assigned { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+.status-scheduled { border-color: var(--focus); background: color-mix(in srgb, var(--focus) 12%, var(--surface-strong)); color: var(--text); }
 .status-pending { background: var(--surface-muted); color: var(--muted); }
+.status-conditional { border-style: dashed; background: var(--surface-muted); color: var(--muted); }
 .status-class { border-color: var(--focus); background: color-mix(in srgb, var(--focus) 14%, var(--surface-strong)); color: var(--text); }
+.study-task-list { display: grid; gap: 12px; }
+.study-task { scroll-margin-top: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-strong); }
+.task-check { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; padding: 14px 16px; cursor: pointer; background: var(--surface-muted); }
+.task-check:has(input:checked) { background: var(--accent-soft); }
+.task-check:has(input:disabled) { cursor: not-allowed; opacity: .68; }
+.task-check input { width: 19px; height: 19px; margin: 3px 0 0; accent-color: var(--accent); }
+.task-check small, .task-check strong { display: block; }
+.task-check small { margin-bottom: 4px; color: var(--muted); font-size: 12px; font-weight: 750; }
+.task-detail { padding: 13px 16px 16px; }
+.task-detail ul { margin: 10px 0 0; padding-left: 1.25rem; }
+.task-detail li { margin: 5px 0; }
+.task-link { display: inline-flex; margin-top: 10px; color: var(--accent); font-weight: 800; }
+.reading-task-list { display: grid; gap: 16px; }
 
 @media (hover: hover) {
   .lane-card, .button, .icon-button, .section-toggle, .text-button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease, color .18s ease; }

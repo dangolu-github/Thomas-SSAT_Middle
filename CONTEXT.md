@@ -55,3 +55,35 @@ An assignment that saves drafts and accepts a deliberate final submission withou
 ## Convenience Access Gate
 
 A learner-facing access-word screen that reduces casual opening but does not make static files confidential. _Avoid_: Password authentication, secure login.
+
+## Self-Study Task
+
+One dated learner action with a stable task ID, exact due time, release state, completion state, and one course-linked purpose. A planned deadline is not proof that the task was completed or checked.
+
+## Reading Booster Task
+
+A Self-Study Task naming an authorized work, exact chapter or public link, due time, and reading focus. Protected text is never copied into the public portal.
+
+## Mock Attempt
+
+A deliberate Reading + Verbal practice submission made from a registered Middle Level source. It records answer choices and section timing but does not return an answer key on the learner surface.
+
+## Mock Answer Sheet
+
+The public-safe interface for a Mock Attempt. It contains section numbers, question numbers, A-E controls, timers, and submit state only; it does not contain protected questions, passages, keys, explanations, or private source paths.
+
+## Mistake Record
+
+A server-side record created only after a deliberate final submission when an answer is wrong or omitted. Drafts and planner checks never create Mistake Records.
+
+## Automatic Category
+
+Deterministic metadata attached to a Mistake Record: Reading or Verbal, Synonym or Analogy when known, and wrong or omitted. It is not a claim about the learner's thinking.
+
+## Confirmed Cause
+
+The controlled reason selected later by Thomas or confirmed by Lucy: `词义未知`, `关系误判`, `证据越界`, `题型判断`, `时间不足`, `粗心`, or `待确认`.
+
+## Repair Task
+
+A separate, source-backed follow-up assigned after a Mistake Record has been reviewed. Automatic logging does not invent or auto-publish similar questions.

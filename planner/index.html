@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../assets/portal.css">
   <script src="../assets/planner-data.js"></script>
   <script src="../assets/portal.js" defer></script>
+  <script src="../assets/self-study.js" defer></script>
 </head>
 <body data-page="planner" data-access="required">
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -21,23 +22,23 @@
 
     <main id="main" class="subpage-main">
       <header class="page-intro">
-        <p class="eyebrow">自学规划 · Self-study Plan</p>
-        <h1>10周 · 30课时 · 目标考试 2026年10月23日</h1>
-        <p>每周三学习 Verbal 新技巧，周六学习 Reading 新技巧，周日进行限时训练、错题归因和同类巩固。考前一周改为短时、减量、稳定节奏。</p>
+        <p class="eyebrow">自学规划</p>
+        <h1>每项任务都有日期、状态和截止时间。</h1>
+        <p>每周阅读、课后生词、已发布作业、Mock 和错题复盘分开安排。周日讲解已经完成的错题，不在课堂完成整套练习。</p>
       </header>
 
-      <p class="planner-notice"><strong>自学规划：</strong>页面只列课堂重点和已经明确布置的任务。标为“暂未布置”的课程不需要提前完成练习。当前先加强 <span lang="en">Authorial Intent、Inference、Analogies</span> 与跳题节奏。</p>
+      <p class="planner-notice"><strong>状态说明：</strong>“当前已布置”和“已安排”可以完成后勾选；“待发布”与“按错题开放”在材料开放前不需要完成。勾选只表示自学任务已做。</p>
 
       <section class="planner-toolbar" aria-label="计划操作">
-        <p class="planner-meter" data-planner-meter aria-live="polite">已完成 0 / 30</p>
+        <p class="planner-meter" data-study-meter aria-live="polite">已完成 0 / 0</p>
         <div class="planner-actions">
-          <button class="button button-primary" type="button" data-planner-save>保存本周进度</button>
-          <button class="button button-secondary" type="button" data-planner-clear>清除全部勾选</button>
+          <button class="button button-primary" type="button" data-study-save>保存进度</button>
+          <button class="button button-secondary" type="button" data-study-clear>清除全部勾选</button>
         </div>
-        <p class="planner-status" data-planner-status aria-live="polite"></p>
+        <p class="planner-status" data-study-status aria-live="polite"></p>
       </section>
 
-      <div class="week-grid" data-planner-weeks></div>
+      <div class="week-grid" data-study-weeks></div>
     </main>
     <footer class="site-footer"><a href="../">返回课程首页</a><button type="button" class="text-button" data-print>打印或保存 PDF</button></footer>
   </div>
