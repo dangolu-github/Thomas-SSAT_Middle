@@ -1,0 +1,10 @@
+body[data-resource-gated="true"] [data-resource-content], body[data-resource-gated="true"] > main:not(.access-gate) { visibility: hidden; }
+body[data-resource-gated="true"][data-resource-ready="true"] [data-resource-content], body[data-resource-gated="true"][data-resource-ready="true"] > main:not(.access-gate) { visibility: visible; }
+.resource-notice, .resource-reveal { margin: 22px auto; padding: 24px; border: 1px solid var(--line, #cbd9da); border-radius: 14px; background: var(--surface-strong, #fff); }
+.resource-notice h1, .resource-reveal h2 { margin-top: 0; }
+.resource-reveal-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.resource-reveal-list { display: grid; gap: 12px; margin-top: 16px; }
+.resource-reveal-card { padding: 16px; border-left: 4px solid var(--accent, #0f5f66); border-radius: 8px; background: var(--surface, #f5f8f8); }
+.resource-reveal-card p { margin: 7px 0; }
+@media (max-width: 640px) { .resource-reveal-heading { align-items: stretch; flex-direction: column; } }
+@media print { .resource-reveal { display: none !important; } }
