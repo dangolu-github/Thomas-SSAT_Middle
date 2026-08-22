@@ -1,0 +1,9 @@
+window.THOMAS_ASSIGNMENT={
+  id:'THO-SSAT-C02-READING-HM01',
+  endpoint:'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec',
+  taskId:'ss-c02-poetry-q1-10-0823',
+  items:[
+    {id:'read-01'},{id:'read-02'},{id:'read-03'},{id:'read-04'},{id:'read-05'},
+    {id:'read-06'},{id:'read-07'},{id:'read-08'},{id:'read-09'},{id:'read-10'}
+  ]
+};
