@@ -44,7 +44,7 @@
     feedbackPanel.className = 'feedback-panel';
     feedbackPanel.dataset.feedbackPanel = '';
     feedbackPanel.hidden = true;
-    feedbackPanel.innerHTML = '<div class="feedback-heading"><div><p class="question-label">提交后复盘</p><h2>答案与讲解</h2></div><button class="button button-secondary" type="button" data-load-feedback hidden>查看讲解</button></div><p class="feedback-status" data-feedback-status></p><div class="feedback-content" data-feedback-content hidden></div>';
+    feedbackPanel.innerHTML = '<div class="feedback-heading"><div><p class="question-label">提交后复盘</p><h2>答案复盘</h2></div><button class="button button-secondary" type="button" data-load-feedback hidden>查看答案</button></div><p class="feedback-status" data-feedback-status></p><div class="feedback-content" data-feedback-content hidden></div>';
     var toolbar = document.querySelector('.assignment-toolbar');
     if (toolbar && toolbar.parentNode) toolbar.parentNode.insertBefore(feedbackPanel, toolbar.nextSibling);
     feedbackStatus = feedbackPanel.querySelector('[data-feedback-status]');
@@ -85,7 +85,7 @@
       feedbackContent.append(card);
     });
     feedbackContent.hidden = false;
-    feedbackStatus.textContent = '讲解已载入，可按题目逐项复盘。';
+    feedbackStatus.textContent = data.explanationsAvailable ? '答案与讲解已载入，可按题目逐项复盘。' : '答案已载入，请先核对自己的选择。';
     feedbackButton.hidden = true;
   }
 
@@ -94,17 +94,19 @@
     ensureFeedbackPanel();
     feedbackPanel.hidden = false;
     feedbackContent.hidden = true;
-    feedbackButton.hidden = !data.feedbackAvailable;
-    feedbackStatus.textContent = data.feedbackAvailable ? '答案与讲解已开放。' : '讲解暂未开放。';
+    var answersAvailable = Boolean(data.answersAvailable || data.feedbackAvailable);
+    feedbackButton.hidden = !answersAvailable;
+    feedbackButton.textContent = data.explanationsAvailable ? '查看答案与讲解' : '查看答案';
+    feedbackStatus.textContent = answersAvailable ? (data.explanationsAvailable ? '答案与讲解已开放。' : '答案已开放，可先自行核对。') : '答案暂未开放。';
   }
 
   function loadFeedback() {
     ensureFeedbackPanel();
     feedbackButton.disabled = true;
-    feedbackStatus.textContent = '正在载入讲解…';
+    feedbackStatus.textContent = '正在载入答案…';
     send('getFeedback', {}).then(function (data) {
       if (!data.ok || !data.available) {
-        feedbackStatus.textContent = '讲解暂未开放。';
+        feedbackStatus.textContent = '答案暂未开放。';
         feedbackButton.hidden = true;
         return;
       }
