@@ -149,12 +149,19 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
 .planner-meter { position: relative; overflow: hidden; margin: 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: linear-gradient(90deg, var(--accent-soft) var(--planner-progress, 0%), transparent var(--planner-progress, 0%)); font-weight: 800; }
 .planner-status { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 14px; }
 .planner-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
-.week-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.week-card { padding: 26px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface-strong); }
-.week-card header { margin-bottom: 18px; }
-.week-card .eyebrow { margin-bottom: 6px; }
-.week-card h2 { margin: 0; font-size: 22px; }
-.week-card p { margin: 8px 0 0; color: var(--muted); }
+.week-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.week-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface-strong); box-shadow: 0 8px 26px rgba(25, 50, 56, .05); }
+.week-summary { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 20px 24px; cursor: pointer; list-style: none; background: var(--surface-muted); }
+.week-summary::-webkit-details-marker { display: none; }
+.week-summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.week-summary > span:first-child { display: grid; gap: 5px; }
+.week-summary .eyebrow { margin: 0; }
+.week-summary strong { font-size: 21px; }
+.week-task-count { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; font-weight: 850; white-space: nowrap; }
+.week-task-count::after { content: "展开"; min-width: 52px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--accent-strong); text-align: center; }
+.week-card[open] .week-task-count::after { content: "收起"; }
+.week-card[open] .week-summary { border-bottom: 1px solid var(--line); background: var(--accent-soft); }
+.week-body { padding: 20px 24px 24px; }
 .weekly-focus, .weekly-routine { margin: 0 0 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-muted); }
 .weekly-focus h3, .weekly-routine h3 { margin: 0 0 8px; color: var(--accent-strong); font-size: 15px; }
 .focus-list, .weekly-routine ul, .session-bullets { margin: 0; padding-left: 1.2rem; }
@@ -235,7 +242,10 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .lane-card, .empty-state, .split-section article, .learning-lane, .practice-modes article, .review-routine { padding: 22px; }
   .practice-modes, .review-routine ol { grid-template-columns: 1fr; }
   .class-meta { grid-template-columns: 1fr; }
-  .week-grid { grid-template-columns: 1fr; }
+  .week-summary { align-items: flex-start; padding: 18px; }
+  .week-summary strong { font-size: 18px; }
+  .week-task-count { flex-direction: column; align-items: flex-end; }
+  .week-body { padding: 16px 16px 18px; }
   .planner-toolbar { position: static; grid-template-columns: 1fr; }
   .planner-actions { justify-content: flex-start; }
   .planner-status { grid-column: 1; }
@@ -256,7 +266,8 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .app-shell { display: block; }
   .main-content, .subpage-main { width: 100%; padding: 0; }
   .hero, .content-section, .learning-lane, .practice-modes article, .review-routine { break-inside: avoid; box-shadow: none; }
-  .poem-reader details:not([open]) > :not(summary) { display: block !important; }
+  .poem-reader details:not([open]) > :not(summary), .week-card:not([open]) > :not(summary) { display: block !important; }
   .poem-reader summary { display: none; }
+  .week-task-count::after { display: none; }
   .section-body[hidden] { display: block; }
 }

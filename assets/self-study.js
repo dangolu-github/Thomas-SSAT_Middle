@@ -60,10 +60,14 @@
   function renderPlanner() {
     var container = document.querySelector('[data-study-weeks]');
     if (!container) return;
-    container.innerHTML = plan.weeks.map(function (week) {
-      return '<section class="week-card"><header><p class="eyebrow">' + esc(week.label) + '</p><h2>' + esc(week.title) + '</h2></header>' +
+    var start = new Date('2026-08-19T00:00:00+08:00');
+    var today = new Date();
+    var currentWeek = Math.max(0, Math.min(plan.weeks.length - 1, Math.floor((today.getTime() - start.getTime()) / (7 * 24 * 60 * 60 * 1000))));
+    container.innerHTML = plan.weeks.map(function (week, index) {
+      var opened = index === currentWeek ? ' open' : '';
+      return '<details class="week-card" data-study-week' + opened + '><summary class="week-summary"><span><span class="eyebrow">' + esc(week.label) + '</span><strong>' + esc(week.title) + '</strong></span><span class="week-task-count">' + week.tasks.length + ' 项任务</span></summary><div class="week-body">' +
         '<section class="weekly-focus"><h3>本周重点</h3><ul class="focus-list">' + week.focus.map(function (item) { return '<li>' + esc(item) + '</li>'; }).join('') + '</ul></section>' +
-        '<div class="study-task-list">' + week.tasks.map(taskCard).join('') + '</div></section>';
+        '<div class="study-task-list">' + week.tasks.map(taskCard).join('') + '</div></div></details>';
     }).join('');
   }
 
@@ -159,6 +163,12 @@
   });
 
   document.querySelectorAll('[data-study-save]').forEach(function (button) { button.addEventListener('click', function () { save(false); }); });
+  document.querySelectorAll('[data-study-expand]').forEach(function (button) {
+    button.addEventListener('click', function () { document.querySelectorAll('[data-study-week]').forEach(function (week) { week.open = true; }); });
+  });
+  document.querySelectorAll('[data-study-collapse]').forEach(function (button) {
+    button.addEventListener('click', function () { document.querySelectorAll('[data-study-week]').forEach(function (week) { week.open = false; }); });
+  });
   document.querySelectorAll('[data-study-clear]').forEach(function (button) {
     button.addEventListener('click', function () {
       if (!window.confirm('确定清除全部自学任务勾选吗？')) return;

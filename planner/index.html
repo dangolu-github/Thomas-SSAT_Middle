@@ -23,8 +23,8 @@
     <main id="main" class="subpage-main">
       <header class="page-intro">
         <p class="eyebrow">自学规划</p>
-        <h1>每项任务都有日期、状态和截止时间。</h1>
-        <p>每周阅读、课后生词、已发布作业、Mock 和错题复盘分开安排。周日讲解已经完成的错题，不在课堂完成整套练习。</p>
+        <h1>按周查看每项自学任务。</h1>
+        <p>每周可以单独展开或收起。课前任务按实际上课日期标注，课后生词也使用对应课堂当天的日期；Mock 保留独立截止时间。</p>
       </header>
 
       <p class="planner-notice"><strong>状态说明：</strong>“当前已布置”和“已安排”可以完成后勾选；“待发布”与“按错题开放”在材料开放前不需要完成。勾选只表示自学任务已做。</p>
@@ -32,6 +32,8 @@
       <section class="planner-toolbar" aria-label="计划操作">
         <p class="planner-meter" data-study-meter aria-live="polite">已完成 0 / 0</p>
         <div class="planner-actions">
+          <button class="button button-secondary" type="button" data-study-expand>展开全部</button>
+          <button class="button button-secondary" type="button" data-study-collapse>收起全部</button>
           <button class="button button-primary" type="button" data-study-save>保存进度</button>
           <button class="button button-secondary" type="button" data-study-clear>清除全部勾选</button>
         </div>
