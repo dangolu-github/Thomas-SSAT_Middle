@@ -7,7 +7,6 @@
   var listNode = document.querySelector('[data-mistake-list]');
   var meter = document.querySelector('[data-mistake-meter]');
   var causes = ['待确认', '词义未知', '关系误判', '证据越界', '题型判断', '时间不足', '粗心'];
-  var knownHomework = ['THO-SSAT-TRIAL-READING-HM01', 'THO-SSAT-TRIAL-VERBAL-HM01'];
 
   function esc(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
@@ -19,14 +18,18 @@
     var items = [];
     try { items = JSON.parse(localStorage.getItem(indexKey) || '[]'); } catch (error) {}
     if (!Array.isArray(items)) items = [];
-    knownHomework.forEach(function (assignmentId) {
-      var stateKey = 'thomas-ssat-assignment-' + assignmentId;
+    for (var index = 0; index < localStorage.length; index += 1) {
+      var key = localStorage.key(index) || '';
+      var match = key.match(/^thomas-ssat-(?:assignment|mock)-(.+)-save-id$/);
+      if (!match) continue;
+      var assignmentId = match[1];
+      var stateKey = key.replace(/-save-id$/, '');
       var state = {};
       try { state = JSON.parse(localStorage.getItem(stateKey) || '{}'); } catch (error) {}
-      var saveId = localStorage.getItem(stateKey + '-save-id');
+      var saveId = localStorage.getItem(key);
       if (state.submitted && saveId && !items.some(function (item) { return item.assignmentId === assignmentId && item.saveId === saveId; })) items.push({ assignmentId: assignmentId, saveId: saveId });
-    });
-    return items.slice(-20);
+    }
+    return items.slice(-120);
   }
 
   function request(action, payload) {
@@ -90,9 +93,16 @@
     var savedSources = sources();
     if (!savedSources.length) { render({ mistakes: [] }); return; }
     status.textContent = '正在读取错题…';
-    request('getMistakes', { sources: savedSources }).then(function (result) {
-      if (!result.ok) throw new Error(result.error || 'Load failed');
-      render(result);
+    var batches = [];
+    for (var index = 0; index < savedSources.length; index += 20) batches.push(savedSources.slice(index, index + 20));
+    Promise.all(batches.map(function (batch) { return request('getMistakes', { sources: batch }); })).then(function (results) {
+      var mistakes = [];
+      results.forEach(function (result) {
+        if (!result.ok) throw new Error(result.error || 'Load failed');
+        mistakes = mistakes.concat(result.mistakes || []);
+      });
+      mistakes.sort(function (a, b) { return (a.assignmentTitle + a.itemId).localeCompare(b.assignmentTitle + b.itemId); });
+      render({ mistakes: mistakes });
     }).catch(function () { status.textContent = '暂时未能读取错题，请稍后再试。'; });
   }
 

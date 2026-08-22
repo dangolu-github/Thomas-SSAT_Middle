@@ -190,7 +190,7 @@
     try { list = JSON.parse(localStorage.getItem(sourceIndexKey) || '[]'); } catch (error) {}
     if (!Array.isArray(list)) list = [];
     if (!list.some(function (item) { return item.assignmentId === mock.id && item.saveId === saveId(); })) list.push({ assignmentId: mock.id, saveId: saveId() });
-    localStorage.setItem(sourceIndexKey, JSON.stringify(list.slice(-20)));
+    localStorage.setItem(sourceIndexKey, JSON.stringify(list.slice(-120)));
   }
 
   function restore() {
@@ -200,7 +200,10 @@
       var input = document.querySelector('input[name="' + id + '"][value="' + answer.choice + '"]');
       if (input) input.checked = true;
     });
-    if (state.submitted) lockSubmitted(state.receiptTime);
+    if (state.submitted) {
+      registerSource();
+      lockSubmitted(state.receiptTime);
+    }
     renderTimerState();
   }
 
