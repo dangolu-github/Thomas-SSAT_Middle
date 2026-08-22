@@ -1,10 +1,30 @@
 (function () {
   'use strict';
+  var resourceAccessScript = document.currentScript;
   var body = document.body;
   var resourceId = body.dataset.resourceId;
   var endpoint = body.dataset.resourceEndpoint;
   var content = document.querySelector('[data-resource-content]') || document.querySelector('main:not(.access-gate)');
   if (!resourceId || !endpoint || !content) return;
+
+  function loadClassAnnotations() {
+    if (body.dataset.annotations === 'off' || document.querySelector('script[data-class-annotations],script[src*="class-annotations.js"]')) return;
+    var assetBase = resourceAccessScript && resourceAccessScript.src ? new URL('./', resourceAccessScript.src) : new URL('../assets/', window.location.href);
+    if (!document.querySelector('link[href*="class-annotations.css"]')) {
+      var stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = new URL('class-annotations.css', assetBase).href;
+      stylesheet.dataset.classAnnotations = 'true';
+      document.head.appendChild(stylesheet);
+    }
+    var script = document.createElement('script');
+    script.src = new URL('class-annotations.js', assetBase).href;
+    script.defer = true;
+    script.dataset.classAnnotations = 'true';
+    document.head.appendChild(script);
+  }
+
+  loadClassAnnotations();
 
   function showNotice(title, message) {
     content.innerHTML = '';
