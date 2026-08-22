@@ -45,12 +45,16 @@
     var disabled = state.checkable ? '' : ' disabled aria-disabled="true"';
     var onReadingPage = Boolean(document.querySelector('[data-reading-tasks]'));
     var link = task.href && !(onReadingPage && task.type === 'Reading Skill Booster') ? '<a class="task-link" href="' + esc(task.href) + '">打开任务</a>' : '';
+    var resources = (task.resources || []).map(function (resource) {
+      return '<a class="task-resource" href="' + esc(resource.href) + '" target="_blank" rel="noopener noreferrer">' + esc(resource.label) + '</a>';
+    }).join('');
+    var resourceBlock = link || resources ? '<div class="task-resources">' + link + resources + '</div>' : '';
     return '<article class="study-task" id="' + esc(task.id) + '">' +
       '<label class="task-check" for="check-' + esc(task.id) + '">' +
       '<input id="check-' + esc(task.id) + '" type="checkbox" data-study-task="' + esc(task.id) + '"' + disabled + '>' +
       '<span><small>' + esc(task.date) + ' · ' + esc(task.type) + '</small><strong>' + esc(task.title) + '</strong></span></label>' +
       '<div class="task-detail"><span class="status-pill status-' + esc(state.tone) + '">' + esc(state.label) + '</span>' +
-      '<ul>' + task.bullets.map(function (bullet) { return '<li>' + esc(bullet) + '</li>'; }).join('') + '</ul>' + link + '</div></article>';
+      '<ul>' + task.bullets.map(function (bullet) { return '<li>' + esc(bullet) + '</li>'; }).join('') + '</ul>' + resourceBlock + '</div></article>';
   }
 
   function renderPlanner() {

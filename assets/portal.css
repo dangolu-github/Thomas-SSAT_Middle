@@ -190,7 +190,18 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
 .task-detail ul { margin: 10px 0 0; padding-left: 1.25rem; }
 .task-detail li { margin: 5px 0; }
 .task-link { display: inline-flex; margin-top: 10px; color: var(--accent); font-weight: 800; }
+.task-resources { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 12px; }
+.task-resources .task-link { margin-top: 0; }
+.task-resource { display: inline-flex; align-items: center; min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--accent); font-size: 13px; font-weight: 800; text-decoration: none; }
 .reading-task-list { display: grid; gap: 16px; }
+.poem-reader { scroll-margin-top: 22px; }
+.poem-reader details { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface-strong); }
+.poem-reader summary { padding: 16px 18px; background: var(--accent-soft); color: var(--accent-strong); font-weight: 900; cursor: pointer; }
+.poem-reader summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.poem-copy { width: min(100%, 640px); margin: 0 auto; padding: 24px 28px 10px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; line-height: 1.72; }
+.poem-copy p { margin: 0 0 20px; }
+.poem-attribution { margin: 0; padding: 0 28px 24px; color: var(--muted); font-size: 13px; }
+.poem-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 
 @media (hover: hover) {
   .lane-card, .button, .icon-button, .section-toggle, .text-button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease, color .18s ease; }
@@ -228,6 +239,8 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .planner-toolbar { position: static; grid-template-columns: 1fr; }
   .planner-actions { justify-content: flex-start; }
   .planner-status { grid-column: 1; }
+  .poem-copy { padding: 20px 18px 8px; font-size: 16px; }
+  .poem-attribution { padding: 0 18px 20px; }
   .practice-modes article:last-child { grid-column: auto; }
   .site-footer { align-items: flex-start; flex-direction: column; padding: 20px; }
 }
@@ -243,5 +256,7 @@ h1 { margin: 0; font-size: clamp(40px, 6vw, 70px); line-height: 1.02; letter-spa
   .app-shell { display: block; }
   .main-content, .subpage-main { width: 100%; padding: 0; }
   .hero, .content-section, .learning-lane, .practice-modes article, .review-routine { break-inside: avoid; box-shadow: none; }
+  .poem-reader details:not([open]) > :not(summary) { display: block !important; }
+  .poem-reader summary { display: none; }
   .section-body[hidden] { display: block; }
 }
