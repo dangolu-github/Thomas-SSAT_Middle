@@ -13,6 +13,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 - Reading Skill Booster provides nine exact reading assignments plus one exam-week concept review. The public-domain poem `The Road Not Taken` is available in an attributed native toggle; protected novel text remains external to the portal.
 - Three Reading + Verbal Mock answer sheets provide 40/30-minute timers and deliberate final submission. Public files contain no questions or keys.
 - Final homework and Mock submissions generate minimal learner-visible wrong/omitted records. The private Teacher Portal retains choices and keys; cognitive causes remain `待确认` until selected.
+- Released handouts can display published classroom highlights, underlines, and text comments. The learner view is read-only and shows nothing until a classroom-annotation version is explicitly released.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
 
 ## Information architecture
