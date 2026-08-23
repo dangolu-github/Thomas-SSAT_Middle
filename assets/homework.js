@@ -18,6 +18,7 @@
   var feedbackPanel = null;
   var feedbackStatus = null;
   var feedbackButton = null;
+  var feedbackScore = null;
   var feedbackContent = null;
 
   function makeSaveId() { if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID(); return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2); }
@@ -44,11 +45,12 @@
     feedbackPanel.className = 'feedback-panel';
     feedbackPanel.dataset.feedbackPanel = '';
     feedbackPanel.hidden = true;
-    feedbackPanel.innerHTML = '<div class="feedback-heading"><div><p class="question-label">提交后复盘</p><h2>答案复盘</h2></div><button class="button button-secondary" type="button" data-load-feedback hidden>查看答案</button></div><p class="feedback-status" data-feedback-status></p><div class="feedback-content" data-feedback-content hidden></div>';
+    feedbackPanel.innerHTML = '<div class="feedback-heading"><div><p class="question-label">提交后复盘</p><h2>批改结果</h2></div><button class="button button-secondary" type="button" data-load-feedback hidden>查看答案</button></div><div class="feedback-score" data-feedback-score hidden></div><p class="feedback-status" data-feedback-status></p><div class="feedback-content" data-feedback-content hidden></div>';
     var toolbar = document.querySelector('.assignment-toolbar');
     if (toolbar && toolbar.parentNode) toolbar.parentNode.insertBefore(feedbackPanel, toolbar.nextSibling);
     feedbackStatus = feedbackPanel.querySelector('[data-feedback-status]');
     feedbackButton = feedbackPanel.querySelector('[data-load-feedback]');
+    feedbackScore = feedbackPanel.querySelector('[data-feedback-score]');
     feedbackContent = feedbackPanel.querySelector('[data-feedback-content]');
     feedbackButton.addEventListener('click', loadFeedback);
   }
@@ -61,8 +63,16 @@
     parent.append(line);
   }
 
+  function renderScore(score) {
+    ensureFeedbackPanel();
+    if (!score) { feedbackScore.hidden = true; feedbackScore.textContent = ''; return; }
+    feedbackScore.innerHTML = '<div><span>本次得分</span><strong>' + score.correctCount + ' / ' + score.totalCount + '</strong></div><div><span>正确率</span><strong>' + score.percent + '%</strong></div><p>错误 ' + score.wrongCount + ' 题 · 未作答 ' + score.omittedCount + ' 题</p>';
+    feedbackScore.hidden = false;
+  }
+
   function renderFeedback(data) {
     ensureFeedbackPanel();
+    renderScore(data.score || null);
     feedbackContent.textContent = '';
     (data.items || []).forEach(function (item, index) {
       var card = document.createElement('article');
@@ -95,6 +105,7 @@
     feedbackPanel.hidden = false;
     feedbackContent.hidden = true;
     var answersAvailable = Boolean(data.answersAvailable || data.feedbackAvailable);
+    renderScore(answersAvailable ? data.score : null);
     feedbackButton.hidden = !answersAvailable;
     feedbackButton.textContent = data.explanationsAvailable ? '查看答案与讲解' : '查看答案';
     feedbackStatus.textContent = answersAvailable ? (data.explanationsAvailable ? '答案与讲解已开放。' : '答案已开放，可先自行核对。') : '答案暂未开放。';
