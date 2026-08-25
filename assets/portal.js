@@ -26,7 +26,24 @@
 
   function setupAccessGate() {
     if (document.body.dataset.access !== 'required') return true;
-    if (sessionStorage.getItem(accessKey) === accessHash) {
+
+    function hasTrustedAccess(storage) {
+      try { return storage.getItem(accessKey) === accessHash; }
+      catch (error) { return false; }
+    }
+
+    function rememberTrustedAccess() {
+      try {
+        localStorage.setItem(accessKey, accessHash);
+        return;
+      } catch (error) {
+        try { sessionStorage.setItem(accessKey, accessHash); }
+        catch (storageError) { /* Access remains valid for this page load only. */ }
+      }
+    }
+
+    if (hasTrustedAccess(localStorage) || hasTrustedAccess(sessionStorage)) {
+      rememberTrustedAccess();
       document.body.dataset.access = 'granted';
       return true;
     }
@@ -39,6 +56,7 @@
       '<p class="eyebrow">Thomas SSAT</p>' +
       '<h1>进入 Thomas 的学习空间</h1>' +
       '<p>请输入访问密码。</p>' +
+      '<p class="access-note">本设备的当前浏览器验证一次后，下次可直接进入。</p>' +
       '<label for="portal-access">访问密码</label>' +
       '<input id="portal-access" name="access" type="password" autocomplete="current-password" required>' +
       '<button class="button button-primary" type="submit">进入学习空间</button>' +
@@ -56,7 +74,7 @@
         input.select();
         return;
       }
-      sessionStorage.setItem(accessKey, accessHash);
+      rememberTrustedAccess();
       document.body.dataset.access = 'granted';
       gate.remove();
     });

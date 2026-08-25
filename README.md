@@ -29,4 +29,4 @@ The structure mirrors the approved SAT portal information architecture, but all 
 
 ## Publication boundary
 
-This repository is learner-facing only. Private teacher artifacts, answers, controls, responses, and evidence stay in authenticated or local private storage. The requested access word is implemented only as a static convenience gate and is not confidential authentication.
+This repository is learner-facing only. Private teacher artifacts, answers, controls, responses, and evidence stay in authenticated or local private storage. The requested access word is implemented only as a static convenience gate and is not confidential authentication. After one correct entry, the current browser profile stores only a local trust marker; a new device/browser profile, private session, or cleared site data prompts again.
