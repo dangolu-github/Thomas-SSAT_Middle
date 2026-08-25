@@ -4,6 +4,8 @@ window.THOMAS_ASSIGNMENT={
   taskId:'ss-c02-poetry-q1-10-0823',
   items:[
     {id:'read-01'},{id:'read-02'},{id:'read-03'},{id:'read-04'},{id:'read-05'},
-    {id:'read-06'},{id:'read-07'},{id:'read-08'},{id:'read-09'},{id:'read-10'}
+    {id:'read-06'},{id:'read-07'},{id:'read-08'},{id:'read-09'},{id:'read-10'},
+    {id:'read-11'},{id:'read-12'},{id:'read-13'},{id:'read-14'},{id:'read-15'},
+    {id:'read-16'},{id:'read-17'},{id:'read-18'},{id:'read-19'},{id:'read-20'}
   ]
 };
