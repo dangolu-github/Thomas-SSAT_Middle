@@ -60,7 +60,7 @@
         '<div class="mistake-controls"><label>错因<select data-mistake-cause>' + options + '</select></label>' +
         '<label class="review-check"><input type="checkbox" data-mistake-reviewed' + (item.reviewed ? ' checked' : '') + '> 已完成复盘</label>' +
         '<button class="button button-secondary" type="button" data-save-mistake>保存</button></div>' +
-        '<p class="mistake-repair">巩固：' + esc(item.repairState || '待发布') + '</p></article>';
+        '</article>';
     }).join('');
     bindCards();
     status.textContent = '记录已更新。';

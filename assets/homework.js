@@ -108,7 +108,7 @@
     renderScore(answersAvailable ? data.score : null);
     feedbackButton.hidden = !answersAvailable;
     feedbackButton.textContent = data.explanationsAvailable ? '查看答案与讲解' : '查看答案';
-    feedbackStatus.textContent = answersAvailable ? (data.explanationsAvailable ? '答案与讲解已开放。' : '答案已开放，可先自行核对。') : '答案暂未开放。';
+    feedbackStatus.textContent = answersAvailable ? (data.explanationsAvailable ? '可以查看答案与讲解。' : '可以查看答案，请先核对自己的选择。') : '答案暂时不可查看。';
   }
 
   function loadFeedback() {
@@ -117,7 +117,7 @@
     feedbackStatus.textContent = '正在载入答案…';
     send('getFeedback', {}).then(function (data) {
       if (!data.ok || !data.available) {
-        feedbackStatus.textContent = '答案暂未开放。';
+        feedbackStatus.textContent = '答案暂时不可查看。';
         feedbackButton.hidden = true;
         return;
       }
@@ -137,7 +137,7 @@
 
   function disableAll() { document.querySelectorAll('[data-assignment-form] input, [data-assignment-form] textarea').forEach(function (control) { control.disabled = true; }); document.querySelectorAll('.question-card').forEach(function (card) { card.setAttribute('aria-disabled', 'true'); card.classList.remove('correction-required'); }); }
   function lockSubmitted(receiptTime) { correctionMode = false; disableAll(); if (submitButton) submitButton.disabled = true; if (saveButton) saveButton.disabled = true; if (correctionActions) correctionActions.hidden = true; if (receipt) receipt.textContent = '首次提交已保留 · ' + formatReceipt(receiptTime); showStatus('作业已成功提交。'); }
-  function openCorrection(data) { ensureCorrectionActions(); correctionMode = true; correctionIds = data.correctableItemIds || []; disableAll(); var saved = data.correctionAnswers || readState().correctionAnswers || {}; restoreAnswers(saved); correctionIds.forEach(function (id) { var card = document.querySelector('[data-item-id="' + id + '"]'); if (!card) return; card.classList.add('correction-required'); card.removeAttribute('aria-disabled'); card.querySelectorAll('input, textarea').forEach(function (control) { control.disabled = false; }); }); correctionActions.hidden = false; if (correctionSaveButton) correctionSaveButton.disabled = false; if (correctionSubmitButton) correctionSubmitButton.disabled = false; showStatus('改错已开放：请重新完成标记题目。首次提交不会被覆盖。'); }
+  function openCorrection(data) { ensureCorrectionActions(); correctionMode = true; correctionIds = data.correctableItemIds || []; disableAll(); var saved = data.correctionAnswers || readState().correctionAnswers || {}; restoreAnswers(saved); correctionIds.forEach(function (id) { var card = document.querySelector('[data-item-id="' + id + '"]'); if (!card) return; card.classList.add('correction-required'); card.removeAttribute('aria-disabled'); card.querySelectorAll('input, textarea').forEach(function (control) { control.disabled = false; }); }); correctionActions.hidden = false; if (correctionSaveButton) correctionSaveButton.disabled = false; if (correctionSubmitButton) correctionSubmitButton.disabled = false; showStatus('现在可以完成改错。请重新完成标记题目；首次提交不会被覆盖。'); }
   function lockCorrection(receiptTime) { correctionMode = false; disableAll(); ensureCorrectionActions(); correctionActions.hidden = true; if (receipt) receipt.textContent = '首次提交已保留 · 改错已提交 ' + formatReceipt(receiptTime); showStatus('改错已成功提交。'); }
 
   function refreshSubmissionState() { return send('getSubmissionState', {}).then(function (data) { if (!data.ok || !data.submitted) return data; registerSource(); var state = readState(); state.submitted = true; state.receiptTime = data.firstReceiptTime || state.receiptTime || 'Recorded'; writeState(state); lockSubmitted(state.receiptTime); updateFeedbackState(data); if (!data.correctionEnabled) return data; if (data.correctionStatus === 'submitted') { lockCorrection(data.correctionReceiptTime || 'Recorded'); return data; } if (data.correctableItemIds && data.correctableItemIds.length) openCorrection(data); else showStatus('首次提交已保留；本次没有需要改错的题目。'); return data; }).catch(function () { return { ok: false }; }); }

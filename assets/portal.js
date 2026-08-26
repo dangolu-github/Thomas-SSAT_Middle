@@ -56,7 +56,7 @@
       '<p class="eyebrow">Thomas SSAT</p>' +
       '<h1>进入 Thomas 的学习空间</h1>' +
       '<p>请输入访问密码。</p>' +
-      '<p class="access-note">本设备的当前浏览器验证一次后，下次可直接进入。</p>' +
+      '<p class="access-note">输入密码后即可进入；本浏览器会记住登录状态。</p>' +
       '<label for="portal-access">访问密码</label>' +
       '<input id="portal-access" name="access" type="password" autocomplete="current-password" required>' +
       '<button class="button button-primary" type="submit">进入学习空间</button>' +

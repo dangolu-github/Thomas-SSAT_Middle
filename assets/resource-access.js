@@ -67,7 +67,7 @@
   function addRevealPanel() {
     var panel = document.createElement('section');
     panel.className = 'resource-reveal';
-    panel.innerHTML = '<div class="resource-reveal-heading"><div><p class="eyebrow">课堂复盘</p><h2>答案与讲解</h2></div><button class="button button-secondary" type="button" data-resource-reveal-button>查看讲解</button></div><p data-resource-reveal-status>讲解已开放。</p><div class="resource-reveal-list" data-resource-reveal-list hidden></div>';
+    panel.innerHTML = '<div class="resource-reveal-heading"><div><p class="eyebrow">课堂复盘</p><h2>答案与讲解</h2></div><button class="button button-secondary" type="button" data-resource-reveal-button>查看讲解</button></div><p data-resource-reveal-status>可以查看讲解。</p><div class="resource-reveal-list" data-resource-reveal-list hidden></div>';
     content.append(panel);
     var button = panel.querySelector('[data-resource-reveal-button]');
     var list = panel.querySelector('[data-resource-reveal-list]');
@@ -92,7 +92,7 @@
     .then(function (response) { return response.json(); })
     .then(function (state) {
       if (!state.ok || !state.accessEnabled) {
-        showNotice('暂未开放', '这份学习资料暂未开放。');
+        showNotice('暂时无法查看', '请从课程首页选择当前学习资料。');
         return;
       }
       if (state.revealAvailable) addRevealPanel();

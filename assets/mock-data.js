@@ -8,7 +8,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 2',
       title: '定制 Early Diagnostic',
       due: '8月28日 周五 · 20:00',
-      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
+      source: '题目、A–E 作答和分科计时都在同一页面。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
@@ -19,7 +19,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 3',
       title: '定制 Mid-course Transfer',
       due: '9月11日 周五 · 20:00',
-      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
+      source: '题目、A–E 作答和分科计时都在同一页面。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
@@ -30,7 +30,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 4',
       title: '定制 Final Comprehensive',
       due: '10月8日 周四 · 20:00',
-      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
+      source: '题目、A–E 作答和分科计时都在同一页面。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
