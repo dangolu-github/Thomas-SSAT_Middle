@@ -11,8 +11,8 @@ Learner portal for Thomas's Middle Level SSAT course.
 - The Chinese-first self-study planner contains the course-linked actions through the 2026-10-23 exam. The two Class 01 assignments are due 2026-08-23 at 10:00 before the Sunday Review Class; other scheduled actions retain their stated dates.
 - Planner items distinguish `当前已布置`, `已安排`, `待发布`, and `按错题开放`. Each action has bullet-point requirements and an exact due time. Unless Lucy sets another deadline, class-assigned homework is due before the same week's Sunday Review Class at 10:00.
 - Reading Skill Booster provides nine exact reading assignments plus one exam-week concept review. The public-domain poem `The Road Not Taken` is available in an attributed native toggle; protected novel text remains external to the portal.
-- Three Reading + Verbal Mock answer sheets provide 40/30-minute timers and deliberate final submission. Public files contain no questions or keys.
-- Final homework and Mock submissions generate minimal learner-visible wrong/omitted records. The private Teacher Portal retains choices and keys; cognitive causes remain `待确认` until selected.
+- Three Reading + Verbal Mocks open as authenticated integrated exams: each protected source page and its A-E response controls appear together, with 40/30-minute section timers and deliberate final submission. The public repository contains only a launcher and no questions or keys.
+- Mock submission is scored immediately on the private server. The score remains hidden from the learner until the teacher chooses `Release mark`; `Do not release` restores the held state. Homework and Mock final submissions still create minimal learner-visible wrong/omitted records, while keys and source maps remain private.
 - Every registered handout receives classroom highlights, underlines, and text comments by default unless explicitly disabled. The learner view is read-only and shows nothing until a classroom-annotation version is explicitly released.
 - The public source contains no private answer keys, teacher notes, learner records, storage identifiers, credentials, local paths, or another learner's data.
 
@@ -20,7 +20,7 @@ Learner portal for Thomas's Middle Level SSAT course.
 
 - `index.html`: date-first class logbook and course home.
 - `learning/`: Reading, Verbal, Writing Sample, and Reading Skill Booster.
-- `practice/`: active assignments plus three protected-source Mock answer sheets.
+- `practice/`: active assignments plus launchers for three authenticated, integrated protected-source Mocks.
 - `review/`: classroom review plus the final-submit Mistake Log.
 - `planner/`: ten-week Chinese self-study plan with weekly focus bullets, exact deadlines, explicit states, and saved checkmarks.
 - `assets/`: shared visual tokens and interaction behavior.

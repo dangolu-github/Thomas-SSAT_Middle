@@ -66,11 +66,11 @@ A Self-Study Task naming an authorized work, exact chapter or public link, due t
 
 ## Mock Attempt
 
-A deliberate Reading + Verbal practice submission made from a registered Middle Level source. It records answer choices and section timing but does not return an answer key on the learner surface.
+A deliberate Reading + Verbal practice submission made in the authenticated integrated exam. It records answer choices and section timing, is scored on the private server, and reveals only the aggregate mark after the teacher releases it. It never returns an answer key on the learner surface.
 
-## Mock Answer Sheet
+## Secure Integrated Mock
 
-The public-safe interface for a Mock Attempt. It contains section numbers, question numbers, A-E controls, timers, and submit state only; it does not contain protected questions, passages, keys, explanations, or private source paths.
+The public portal contains only a launcher. After separate server authentication, the learner receives protected source-page images with A-E controls in the same question block, section timers, and deliberate submit state. Keys, source maps, explanations, credentials, and private paths remain server-private. The aggregate mark is held until the teacher releases it.
 
 ## Mistake Record
 

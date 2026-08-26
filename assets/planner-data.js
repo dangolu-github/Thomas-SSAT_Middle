@@ -48,7 +48,7 @@
           task('ss-vocab-0827', '8月26日 周三 · 课后 21:00前', '生词本', '录入 8月26日 Verbal 课堂生词', 'scheduled', ['加入课堂和 Verbal Homework 1 中不认识或不确定的词。']),
           task('ss-read-dragon-01-0827', '8月29日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 1', 'scheduled', ['使用授权版本阅读 Chapter 1。', '关注 Moon Shadow 的 identity，以及想象与现实中的 belonging。'], '../learning/reading-booster/#ss-read-dragon-01-0827'),
           task('ss-hm-verbal-submit-0827', '8月30日 周日 · 10:00课前', 'Verbal 作业', 'Verbal Homework 1 · Analogies Q16–30', 'assigned', ['完成 Q16–30。', '核对 Q1–15 已保存后，提交整份 30 题作业。'], '../practice/verbal-homework-1/'),
-          task('ss-mock-02-0828', '8月28日 周五 · 20:00', 'Mock Exam', 'Mock 2 · 定制 Early Diagnostic', 'scheduled', ['打开老师单独提供的私密学生试卷。', 'Reading 1–40：40分钟。', 'Verbal 1–60：30分钟。', '在网站答题卡正式提交。'], '../practice/mock-exams/answer-sheet.html?mock=2'),
+          task('ss-mock-02-0828', '8月28日 周五 · 20:00', 'Mock Exam', 'Mock 2 · 定制 Early Diagnostic', 'scheduled', ['进入受保护的一体化 Mock 页面。', '试题与 A–E 作答区在同一页面。', 'Reading 1–40：40分钟；Verbal 1–60：30分钟。', '完成后正式提交；成绩由老师决定何时发布。'], '../practice/mock-exams/answer-sheet.html?mock=2'),
           task('ss-vocab-0830', '8月29日 周六 · 课后 20:00前', '生词本', '录入 8月29日 Reading 课堂生词', 'scheduled', ['合并课堂、Chapter 1 与 Mock 2 中不确定的词。']),
           task('ss-vocab-0831', '8月30日 周日 · 课后 20:00前', '生词本', '录入 8月30日复盘课生词并去重', 'scheduled', ['只保留仍需复习的词。']),
           task('ss-mistake-mock2-0831', '8月30日 周日 · 10:00课前', '错题汇总', '确认 Mock 2 错因', 'scheduled', ['逐项查看 wrong / omitted。', '把“待确认”改为最符合的原因。'], '../review/mistake-log/'),
@@ -76,7 +76,7 @@
         tasks: [
           task('ss-vocab-0910', '9月9日 周三 · 课后 21:00前', '生词本', '录入 9月9日 Verbal 课堂生词', 'scheduled', ['加入关系词与主题词。']),
           task('ss-read-dragon-07-0910', '9月12日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 7', 'scheduled', ['使用授权版本阅读 Chapter 7。', '关注学习、发明、friendship 与 belonging 的变化。'], '../learning/reading-booster/#ss-read-dragon-07-0910'),
-          task('ss-mock-03-0911', '9月11日 周五 · 20:00', 'Mock Exam', 'Mock 3 · 定制 Mid-course Transfer', 'scheduled', ['打开老师单独提供的私密学生试卷。', 'Reading 1–40：40分钟。', 'Verbal 1–60：30分钟。', '在网站答题卡正式提交。'], '../practice/mock-exams/answer-sheet.html?mock=3'),
+          task('ss-mock-03-0911', '9月11日 周五 · 20:00', 'Mock Exam', 'Mock 3 · 定制 Mid-course Transfer', 'scheduled', ['进入受保护的一体化 Mock 页面。', '试题与 A–E 作答区在同一页面。', 'Reading 1–40：40分钟；Verbal 1–60：30分钟。', '完成后正式提交；成绩由老师决定何时发布。'], '../practice/mock-exams/answer-sheet.html?mock=3'),
           task('ss-vocab-0913', '9月12日 周六 · 课后 20:00前', '生词本', '录入 9月12日 Reading 课堂生词', 'scheduled', ['合并课堂、Chapter 7 与 Mock 3 生词。']),
           task('ss-vocab-0914', '9月13日 周日 · 课后 20:00前', '生词本', '录入 9月13日复盘课生词并去重', 'scheduled', ['只保留仍需复习的词。']),
           task('ss-mistake-mock3-0914', '9月13日 周日 · 10:00课前', '错题汇总', '确认 Mock 3 错因', 'scheduled', ['逐项查看 wrong / omitted。', '确认每条错因。'], '../review/mistake-log/'),
@@ -129,7 +129,7 @@
         focus: ['Verbal：速度、精度与最后两项排除。', 'Reading：较旧 diction、人物声音、家庭关系与社会期待。', '复盘：依据 Mock 4 与前三轮已检查记录形成最后修复清单。'],
         tasks: [
           task('ss-vocab-1008', '10月7日 周三 · 课后 21:00前', '生词本', '录入 10月7日 Verbal 课堂生词', 'scheduled', ['加入个人易混词和主题词。']),
-          task('ss-mock-04-1008', '10月8日 周四 · 20:00', 'Mock Exam', 'Mock 4 · 定制 Final Comprehensive', 'scheduled', ['打开老师单独提供的私密学生试卷。', 'Reading 1–40：40分钟。', 'Verbal 1–60：30分钟。', '在网站答题卡正式提交。'], '../practice/mock-exams/answer-sheet.html?mock=4'),
+          task('ss-mock-04-1008', '10月8日 周四 · 20:00', 'Mock Exam', 'Mock 4 · 定制 Final Comprehensive', 'scheduled', ['进入受保护的一体化 Mock 页面。', '试题与 A–E 作答区在同一页面。', 'Reading 1–40：40分钟；Verbal 1–60：30分钟。', '完成后正式提交；成绩由老师决定何时发布。'], '../practice/mock-exams/answer-sheet.html?mock=4'),
           task('ss-read-little-women-1009', '10月10日 周六 · 14:00课前', 'Reading Skill Booster', 'Little Women · Chapters 1–2', 'scheduled', ['从 Project Gutenberg 阅读 Chapters 1–2。', '关注较旧 diction、人物声音、家庭关系与社会期待。'], '../learning/reading-booster/#ss-read-little-women-1009'),
           task('ss-vocab-1011', '10月10日 周六 · 课后 20:00前', '生词本', '录入 10月10日 Reading、Mock 4 与章节生词', 'scheduled', ['合并课堂、Mock 4 与 Chapters 1–2 生词并去重。']),
           task('ss-vocab-1012', '10月11日 周日 · 课后 20:00前', '生词本', '录入 10月11日复盘课生词并去重', 'scheduled', ['只复习仍不稳定的词。']),
