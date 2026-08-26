@@ -1,5 +1,6 @@
 window.THOMAS_MOCKS = {
   endpoint: 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec',
+  integratedExamBase: 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec?view=mock-exam&mock=',
   items: {
     '2': {
       id: 'THO-SSAT-MOCK-02-TUTORVERSE-A',
@@ -7,7 +8,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 2',
       title: '定制 Early Diagnostic',
       due: '8月28日 周五 · 20:00',
-      source: '使用老师单独提供的私密学生试卷 PDF；题目为 Tutorverse 与 Ivy Global 原题组合，请勿转发。',
+      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
@@ -18,7 +19,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 3',
       title: '定制 Mid-course Transfer',
       due: '9月11日 周五 · 20:00',
-      source: '使用老师单独提供的私密学生试卷 PDF；题目为 Tutorverse 与 Ivy Global 原题组合，请勿转发。',
+      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
@@ -29,7 +30,7 @@ window.THOMAS_MOCKS = {
       label: 'Mock 4',
       title: '定制 Final Comprehensive',
       due: '10月8日 周四 · 20:00',
-      source: '使用老师单独提供的私密学生试卷 PDF；题目为 Tutorverse 与 Ivy Global 原题组合，请勿转发。',
+      source: '完整试题、A–E 作答和分科计时已合并在受保护的同一页面；请勿转发。',
       sourceUrl: '',
       readingLabel: 'Reading 1–40',
       verbalLabel: 'Verbal 1–60'
