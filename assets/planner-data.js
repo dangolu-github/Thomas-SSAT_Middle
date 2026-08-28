@@ -54,7 +54,7 @@
         focus: ['Verbal：morphology、词性与可验证的排除。', 'Reading：Main Idea、Passage Structure；ambition 与 invention。', '复盘：方法错误与知识缺口分开记录。'],
         tasks: [
           task('ss-vocab-0903', '9月2日 周三 · 课后 21:00前', '生词本', '录入 9月2日 Verbal 课堂生词', 'scheduled', ['加入课堂中的词根、词缀和主题词。']),
-          task('ss-read-dragon-03-0904', '9月5日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 3', 'scheduled', ['阅读 Chapter 3。', '关注 Windrider 的 ambition、invention 与父子关系。'], '../learning/reading-booster/#ss-read-dragon-03-0904'),
+          task('ss-read-dragon-03-0904', '9月5日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 3', 'scheduled', ['阅读 Chapter 3。', '关注 Windrider 的 ambition、invention 与父子关系。'], '../learning/dragonwings/'),
           task('ss-practice-verbal-0904', '9月6日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先复习本周 Verbal 方法，并整理生词本。']),
           task('ss-vocab-0906', '9月5日 周六 · 课后 20:00前', '生词本', '录入 9月5日 Reading 与 Chapter 3 生词', 'scheduled', ['合并课堂与章节生词并去重。']),
           task('ss-vocab-0907', '9月6日 周日 · 课后 20:00前', '生词本', '录入 9月6日复盘课生词', 'scheduled', ['保留仍不稳定的词。']),
@@ -76,7 +76,7 @@
         focus: ['Verbal：Synonyms nuance、connotation 与程度。', 'Reading：灾难中的 risk、conflict、community response 与 tone。', '复盘：字面意思、表达效果和态度分开。'],
         tasks: [
           task('ss-vocab-0917', '9月16日 周三 · 课后 21:00前', '生词本', '录入 9月16日 Verbal 课堂生词', 'scheduled', ['加入近义词差别和主题词。']),
-          task('ss-read-dragon-09-10-0918', '9月19日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapters 9–10', 'scheduled', ['阅读 Chapters 9–10。', '关注 earthquake、risk、conflict 与 community response。'], '../learning/reading-booster/#ss-read-dragon-09-10-0918'),
+          task('ss-read-dragon-09-10-0918', '9月19日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapters 9–10', 'scheduled', ['阅读 Chapters 9–10。', '关注 earthquake、risk、conflict 与 community response。'], '../learning/dragonwings/'),
           task('ss-practice-verbal-0918', '9月20日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先完成本周课堂与指定阅读，再继续练习。']),
           task('ss-vocab-0920', '9月19日 周六 · 课后 20:00前', '生词本', '录入 9月19日 Reading 与章节生词', 'scheduled', ['合并课堂与阅读生词。']),
           task('ss-vocab-0921', '9月20日 周日 · 课后 20:00前', '生词本', '录入 9月20日复盘课生词并去重', 'scheduled', ['保留仍不稳定的词。']),
@@ -90,7 +90,7 @@
         focus: ['Verbal：Analogies 难关系与同主题假关系。', 'Reading：人物目标、family、responsibility 与 community support。', '复盘：只处理已经提交并检查的本周错题。'],
         tasks: [
           task('ss-vocab-0924', '9月23日 周三 · 课后 21:00前', '生词本', '录入 9月23日 Verbal 课堂生词', 'scheduled', ['加入抽象关系词和主题词。']),
-          task('ss-read-dragon-12-0924', '9月26日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 12', 'scheduled', ['阅读 Chapter 12。', '关注 ambition、family、responsibility 与 community support。'], '../learning/reading-booster/#ss-read-dragon-12-0924'),
+          task('ss-read-dragon-12-0924', '9月26日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 12', 'scheduled', ['阅读 Chapter 12。', '关注 ambition、family、responsibility 与 community support。'], '../learning/dragonwings/'),
           task('ss-vocab-0927', '9月26日 周六 · 课后 20:00前', '生词本', '录入 9月26日 Reading 课堂生词', 'scheduled', ['合并课堂与 Chapter 12 生词。']),
           task('ss-vocab-0928', '9月27日 周日 · 课后 20:00前', '生词本', '录入 9月27日复盘课生词并去重', 'scheduled', ['只保留仍需复习的词。']),
           task('ss-mistake-0928', '9月27日 周日 · 10:00课前', '错题汇总', '汇总本周已提交练习的错因', 'scheduled', ['只处理已经提交后出现的错题。'], '../review/mistake-log/')

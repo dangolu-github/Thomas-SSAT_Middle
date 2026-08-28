@@ -1,32 +1,37 @@
-# ADR 0003: Protected mock answer sheet and mistake records
+# ADR 0003: Authenticated integrated mock and mark release
 
 ## Status
 
-Accepted on 2026-08-19.
+Accepted on 2026-08-19; revised on 2026-08-26 when authenticated protected delivery became available.
 
 ## Context
 
-Thomas needs dated Reading + Verbal mocks and an automatic mistake log. The selected practice tests are protected third-party materials. The public learner portal uses a static convenience gate and therefore cannot protect question text, answer keys, explanations, local paths, or teacher notes.
+Thomas needs dated Reading + Verbal mocks, automatic scoring, and a mistake log. The selected practice tests are protected third-party materials. The public learner portal uses a static convenience gate and cannot protect question text, answer keys, explanations, local paths, or teacher notes.
 
 ## Decision
 
-- Keep each protected test in its authorized private or publisher-hosted source.
-- Publish only a Mock Answer Sheet with source label, schedule, Reading 1-40, Verbal 1-60, A-E controls, section timers, and a deliberate final submit button.
+- Keep the public repository limited to learner-safe Mock metadata and a launcher.
+- Deliver each Mock only after separate server authentication.
+- Display each protected source-page image and its A-E response controls in the same question block. Do not make the learner switch between a question file and a separate answer sheet.
+- Preserve the Reading 1-40 / 40-minute and Verbal 1-60 / 30-minute section structure and require a deliberate final submit.
 - Keep keys and exact source locators in the private Apps Script assignment registry.
-- Return no key, correctness, score, protected prompt, or teacher note from the learner submission endpoint.
-- Generate Mistake Records only after final submission. Classify section, question family, and wrong/omitted state automatically; leave cognitive cause as `待确认` until a person selects it.
-- Let the learner retrieve only their own minimal mistake list by presenting the assignment/save identifiers stored in the same browser. Do not return correct answers or protected question text.
+- Score the final submission on the private server. Return no item keys, explanations, protected prompt, or teacher note.
+- Hold the aggregate mark by default. The owner-only Teacher Portal provides `Release mark` and `Do not release`; only the released state exposes correct, incorrect, omitted, raw penalty, and accuracy to the learner.
+- Generate Mistake Records only after final submission. Keep cognitive cause as `待确认` until a person selects it.
 - Publish a Repair Task only after a source-backed similar-practice set exists.
 
 ## Consequences
 
-- A learner must have lawful access to the named test outside the public site.
+- The authenticated Mock service reuses the existing Thomas website password; there is no separate Mock access code. Because the public site and Apps Script use different origins, the learner may be asked to enter that same password again.
 - The static `yang` gate never becomes the security boundary for commercial content.
+- Anonymous requests receive no protected page payload.
 - Draft autosave remains separate from submission and cannot create a checked mistake.
-- The mistake list can guide Sunday review without claiming that an automatic category explains why Thomas made the error.
+- Automatic grading does not create an official SSAT scaled score or percentile because the forms are custom composites.
+- Upload and publication do not make a scheduled Mock assigned, attempted, checked, or mastered.
 
 ## Alternatives rejected
 
-- Upload or embed the PDFs in the public repository. Rejected because the gate is not confidential access control and at least one source prohibits redistribution.
-- Put answer keys in client-side JavaScript and hide them in the interface. Rejected because public assets remain readable.
+- Upload or embed PDFs in the public repository. Rejected because the static gate is not confidential access control and at least one source prohibits redistribution.
+- Keep a public answer sheet separate from a privately delivered PDF. Rejected because it creates avoidable page switching and does not meet the integrated learner workflow.
+- Put answer keys in client-side JavaScript. Rejected because public assets remain readable.
 - Infer cognitive error causes from the selected option. Rejected because a wrong answer does not prove why the learner chose it.
