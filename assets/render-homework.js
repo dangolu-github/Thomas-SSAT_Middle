@@ -9,12 +9,15 @@
     card.className = 'question-card';
     card.dataset.itemId = item.id;
     var heading = document.createElement('h2');
+    heading.id = 'question-' + item.id;
     heading.textContent = (index + 1) + '. ' + item.prompt;
     var label = document.createElement('p');
     label.className = 'question-label';
     label.textContent = item.section;
     var choices = document.createElement('div');
     choices.className = 'choice-list';
+    choices.setAttribute('role', 'radiogroup');
+    choices.setAttribute('aria-labelledby', heading.id);
     item.options.forEach(function (option, optionIndex) {
       var choice = document.createElement('label');
       choice.className = 'choice';
