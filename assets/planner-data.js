@@ -46,7 +46,8 @@
         focus: ['Verbal：Analogies bridge、方向与强弱。', 'Reading：Inference 的最小证据边界；人物身份与归属。', '复盘：Mock 2 的 wrong / omitted 与确认错因。'],
         tasks: [
           task('ss-mock-02-0828', '8月28日 周五 · 20:00', 'Mock Exam', 'Mock 2 · 定制 Early Diagnostic', 'assigned', ['输入网站密码后进入完整 Mock 页面。', '试题与 A–E 作答区在同一页面。', 'Reading 1–40：40分钟；Verbal 1–60：30分钟。', '完成后正式提交，成绩稍后查看。'], '../practice/mock-exams/answer-sheet.html?mock=2'),
-          task('ss-c05-reading-homework', '8月29日 周六 · 无截止时间', 'Reading 作业', 'Class 05 · The Map in the Hall', 'assigned', ['阅读全文并完成 Q1–Q10。', '每次修改都会自动保存。', '确认答案后点击“提交作业”；提交后自动批改。'], '../practice/class-05-reading/')
+          task('ss-c05-reading-homework', '8月29日 周六 · 无截止时间', 'Reading 作业', 'Class 05 · The Map in the Hall', 'assigned', ['阅读全文并完成 Q1–Q10。', '每次修改都会自动保存。', '确认答案后点击“提交作业”；提交后自动批改。'], '../practice/class-05-reading/'),
+          task('ss-c06-poetry-homework', '8月30日 周日 · 无截止时间', 'Reading 作业', 'Class 06 · Poetry Reading Q1–Q20', 'assigned', ['进入受保护作业页并完成四篇诗歌。', '完成 Q1–Q20，每题选择 A–E。', '答案自动保存为草稿；确认后点击“正式提交作业”。'], '../practice/class-06-poetry/')
         ]
       },
       {
