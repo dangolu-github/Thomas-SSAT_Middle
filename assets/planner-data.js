@@ -52,10 +52,11 @@
       },
       {
         label: '第3周 · 9月2–8日',
-        title: 'Ambition、Invention 与结构阅读',
-        focus: ['Verbal：morphology、词性与可验证的排除。', 'Reading：Main Idea、Passage Structure；ambition 与 invention。', '复盘：方法错误与知识缺口分开记录。'],
+        title: 'Grievance、Chronology 与结构阅读',
+        focus: ['词汇：政治与历史语境中的精确词义。', 'Reading：Chronology、Cause and Effect 与 supported inference。', '复盘：只采用文本支持的最小结论，不补入背景结果。'],
         tasks: [
-          task('ss-vocab-0903', '9月2日 周三 · 课后 21:00前', '生词本', '录入 9月2日 Verbal 课堂生词', 'scheduled', ['加入课堂中的词根、词缀和主题词。']),
+          task('ss-vocab-0903', '9月2日 周三 · 无截止时间', '生词本', '整理 9月2日历史阅读新增词汇', 'assigned', ['复习课堂总结中的新增词汇。', '注意 measure / policy、right / power 与 adopt 的语境义。', '与 handout Vocabulary Bridge 的 12 个词去重。'], '../2026-09-02/class-summary.html'),
+          task('ss-c07-reading-homework', '9月2日 周三 · 无截止时间', 'Reading 作业', 'Class 07 · From Grievance to Declaration', 'assigned', ['阅读四段文章并完成 Q1–Q10。', '每题选择 A–E，只使用文章证据。', '自动保存只是草稿；确认后点击“正式提交作业”。'], '../practice/class-07-reading/'),
           task('ss-read-dragon-03-0904', '9月5日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 3', 'scheduled', ['阅读 Chapter 3。', '关注 Windrider 的 ambition、invention 与父子关系。'], '../learning/dragonwings/'),
           task('ss-practice-verbal-0904', '9月6日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先复习本周 Verbal 方法，并整理生词本。']),
           task('ss-vocab-0906', '9月5日 周六 · 课后 20:00前', '生词本', '录入 9月5日 Reading 与 Chapter 3 生词', 'scheduled', ['合并课堂与章节生词并去重。']),
