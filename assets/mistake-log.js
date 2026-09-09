@@ -8,7 +8,8 @@
   function session(value){token=value;try{if(value)localStorage.setItem(tokenKey,value);else localStorage.removeItem(tokenKey);}catch(e){}}
   function lock(){session('');generation++;list.innerHTML='';items=[];workspace.hidden=true;login.hidden=false;}
   function request(action,p){p=p||{};p.action=action;if(token)p.token=token;
-    return fetch(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).then(function(r){if(!r.ok)throw new Error('暂时无法连接，请重试。');return r.json();}).then(function(r){if(!r.ok){if(/重新输入网站访问密码/.test(r.error||''))lock();throw new Error(r.error||'暂时未能完成，请重试。');}return r;});
+    var controller=new AbortController(),deadline=setTimeout(function(){controller.abort();},45000);
+    return fetch(endpoint,{method:'POST',redirect:'follow',signal:controller.signal,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).then(function(r){if(!r.ok)throw new Error('暂时无法连接，请重试。');return r.json();}).then(function(r){if(!r.ok){if(/重新输入网站访问密码/.test(r.error||''))lock();throw new Error(r.error||'暂时未能完成，请重试。');}return r;}).catch(function(e){if(e.name==='AbortError')throw new Error('读取时间较长，请稍后重试。');throw e;}).finally(function(){clearTimeout(deadline);});
   }
   function ref(i){return {assignmentId:i.assignmentId,saveId:i.saveId,receiptTime:i.receiptTime,itemId:i.itemId};}
   function error(node,e){node.textContent=e.message||'暂时未能完成，请重试。';}
@@ -47,5 +48,5 @@
   document.querySelector('[data-refresh-mistakes]').addEventListener('click',load);
   document.querySelector('[data-review-lock]').addEventListener('click',lock);
   try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
-  if(token)load();else{login.hidden=false;workspace.hidden=true;}
+  if(token){workspace.hidden=false;login.hidden=true;load();}else{login.hidden=false;workspace.hidden=true;}
 }());
