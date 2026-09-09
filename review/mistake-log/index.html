@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><link rel="icon" href="data:,">
   <title>错题本 | Thomas SSAT</title>
   <link rel="stylesheet" href="../../assets/portal.css"><link rel="stylesheet" href="../../assets/homework.css">
-  <link rel="stylesheet" href="../../assets/mistake-review.css?v=20260909-3">
-  <script src="../../assets/portal.js" defer></script><script src="../../assets/mistake-log.js?v=20260909-3" defer></script>
+  <link rel="stylesheet" href="../../assets/mistake-review.css?v=20260909-4">
+  <script src="../../assets/portal.js" defer></script><script src="../../assets/mistake-log.js?v=20260909-4" defer></script>
 </head>
 <body data-page="review" data-access="review-auth">
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -16,7 +16,7 @@
       <button class="icon-button" type="button" data-theme-toggle aria-label="切换配色">配色</button>
     </header>
     <main id="main" class="subpage-main">
-      <header class="page-intro"><p class="eyebrow">Mistake Review</p><h1>按题型复习，再独立重做。</h1><p>每次正式提交后的错题和未答题会自动归入错题本。展开题目，先读原文，再选择查看答案或重做。</p></header>
+      <header class="page-intro"><p class="eyebrow">Mistake Review</p><h1>按题型复习，再独立重做。</h1><p>每次正式提交后的错题和未答题会自动归入错题本。可按题型筛选，再重做当前页面显示的全部题目。</p></header>
       <form class="review-login" data-review-login hidden>
         <h2>打开你的错题本</h2><p>输入网站访问密码，查看已提交的作业。</p>
         <label>访问密码<input type="password" autocomplete="current-password" required></label>
@@ -29,7 +29,11 @@
           <p class="planner-status" data-mistake-status aria-live="polite"></p>
         </section>
         <div class="review-filters"><label>Question type<select data-type-filter><option value="">全部题型</option></select></label><label>查看<select data-view-filter><option value="active">复习清单</option><option value="removed">已移除</option></select></label></div>
-        <p>答案默认隐藏。重做后可继续保留，也可移出清单；移除的题目可以恢复。</p>
+        <p>答案默认隐藏。“重做本页”包括当前筛选显示的全部题目。重做后可继续保留，也可移出清单；移除的题目可以恢复。</p>
+        <section class="review-page-actions" aria-label="整页重做">
+          <div class="review-buttons"><button class="button button-primary" type="button" data-redo-page>重做本页</button><button class="button button-primary" type="button" data-check-page hidden>检查本页答案</button><button class="button button-secondary" type="button" data-cancel-page hidden>退出本页重做</button></div>
+          <p data-page-redo-status role="status" aria-live="polite"></p>
+        </section>
         <div class="mistake-list" data-mistake-list></div>
       </div>
     </main>
