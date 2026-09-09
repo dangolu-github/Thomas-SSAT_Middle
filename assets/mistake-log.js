@@ -1,112 +1,51 @@
 (function () {
   'use strict';
-
-  var endpoint = 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec';
-  var indexKey = 'thomas-ssat-submission-sources-v1';
-  var status = document.querySelector('[data-mistake-status]');
-  var listNode = document.querySelector('[data-mistake-list]');
-  var meter = document.querySelector('[data-mistake-meter]');
-  var causes = ['待确认', '词义未知', '关系误判', '证据越界', '题型判断', '时间不足', '粗心'];
-
-  function esc(value) {
-    return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];
-    });
+  var endpoint='https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec';
+  var tokenKey='thomas-ssat-review-session-v2',token='',items=[],generation=0;
+  var list=document.querySelector('[data-mistake-list]'),status=document.querySelector('[data-mistake-status]'),meter=document.querySelector('[data-mistake-meter]');
+  var login=document.querySelector('[data-review-login]'),workspace=document.querySelector('[data-review-workspace]'),typeFilter=document.querySelector('[data-type-filter]'),viewFilter=document.querySelector('[data-view-filter]');
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function session(value){token=value;try{if(value)localStorage.setItem(tokenKey,value);else localStorage.removeItem(tokenKey);}catch(e){}}
+  function lock(){session('');generation++;list.innerHTML='';items=[];workspace.hidden=true;login.hidden=false;}
+  function request(action,p){p=p||{};p.action=action;if(token)p.token=token;
+    return fetch(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).then(function(r){if(!r.ok)throw new Error('暂时无法连接，请重试。');return r.json();}).then(function(r){if(!r.ok){if(/重新输入网站访问密码/.test(r.error||''))lock();throw new Error(r.error||'暂时未能完成，请重试。');}return r;});
   }
-
-  function sources() {
-    var items = [];
-    try { items = JSON.parse(localStorage.getItem(indexKey) || '[]'); } catch (error) {}
-    if (!Array.isArray(items)) items = [];
-    for (var index = 0; index < localStorage.length; index += 1) {
-      var key = localStorage.key(index) || '';
-      var match = key.match(/^thomas-ssat-(?:assignment|mock)-(.+)-save-id$/);
-      if (!match) continue;
-      var assignmentId = match[1];
-      var stateKey = key.replace(/-save-id$/, '');
-      var state = {};
-      try { state = JSON.parse(localStorage.getItem(stateKey) || '{}'); } catch (error) {}
-      var saveId = localStorage.getItem(key);
-      if (state.submitted && saveId && !items.some(function (item) { return item.assignmentId === assignmentId && item.saveId === saveId; })) items.push({ assignmentId: assignmentId, saveId: saveId });
+  function ref(i){return {assignmentId:i.assignmentId,saveId:i.saveId,receiptTime:i.receiptTime,itemId:i.itemId};}
+  function error(node,e){node.textContent=e.message||'暂时未能完成，请重试。';}
+  function load(){var run=++generation;status.textContent='正在读取错题…';return request('mistakeReviewList').then(function(r){if(run!==generation)return;items=r.mistakes||[];
+    var chosen=typeFilter.value,types=Array.from(new Set(items.map(function(i){return i.questionType;}))).sort();
+    typeFilter.innerHTML='<option value="">全部题型</option>'+types.map(function(t){return '<option>'+esc(t)+'</option>';}).join('');if(types.indexOf(chosen)>=0)typeFilter.value=chosen;
+    login.hidden=true;workspace.hidden=false;render();status.textContent='已读取 '+r.submittedAssignments+' 份正式提交的作业。';
+  }).catch(function(e){error(status,e);if(!token)document.querySelector('[data-login-status]').textContent=e.message;});}
+  function render(){var removed=viewFilter.value==='removed',visible=items.filter(function(i){return i.removed===removed&&(!typeFilter.value||i.questionType===typeFilter.value);});
+    var count=items.filter(function(i){return !i.removed;}).length;
+    meter.textContent='清单 '+count+' 题 · 已移除 '+(items.length-count)+' 题';
+    if(!visible.length){list.innerHTML='<p class="empty-state">'+(items.length?'当前筛选下没有题目。':'还没有已提交的错题。正式提交作业后，错题和未答题会自动出现在这里。')+'</p>';return;}
+    var groups={};visible.forEach(function(i){var key=i.section+' · '+i.questionType;(groups[key]||(groups[key]=[])).push(i);});
+    list.innerHTML=Object.keys(groups).sort().map(function(key){return '<details class="review-group" open><summary>'+esc(key)+' <span>'+groups[key].length+' 题</span></summary><div class="review-group-items">'+groups[key].map(function(i){var index=items.indexOf(i);return '<details class="mistake-card" data-review-item="'+index+'"><summary><span class="review-result">'+(i.result==='omitted'?'未作答':'错题')+'</span><strong>'+esc(i.assignmentTitle)+' · '+esc(i.label)+'</strong><span class="review-item-type">'+esc(i.prompt||i.questionType)+'</span><small>'+esc(new Date(i.receiptTime).toLocaleDateString('zh-CN'))+(i.redoCount?' · 已重做 '+i.redoCount+' 次':'')+'</small></summary><div class="review-item-body"><p data-card-status role="status"></p><div data-question-content></div><div class="review-buttons"><button class="button button-secondary" type="button" data-answer-toggle aria-expanded="false">显示答案</button><button class="button button-primary" type="button" data-redo>重做</button><button class="button button-secondary" type="button" data-remove>'+ (i.removed?'恢复到清单':'移出清单')+'</button></div><div class="review-answer" data-answer hidden></div><form data-redo-form hidden><fieldset><legend>重新选择答案</legend><div data-redo-options></div></fieldset><button class="button button-primary" type="submit">检查本次答案</button><button class="button button-secondary" data-cancel-redo type="button">取消</button></form></div></details>';}).join('')+'</div></details>';}).join('');
+    list.querySelectorAll('[data-review-item]').forEach(bindCard);
+  }
+  function bindCard(card){var item=items[Number(card.dataset.reviewItem)],msg=card.querySelector('[data-card-status]'),content=card.querySelector('[data-question-content]'),form=card.querySelector('[data-redo-form]'),answer=card.querySelector('[data-answer]'),toggle=card.querySelector('[data-answer-toggle]'),detail=null,loading=null,requestId='';
+    function hideAnswer(){answer.hidden=true;answer.textContent='';toggle.textContent='显示答案';toggle.setAttribute('aria-expanded','false');}
+    function busy(on){card.querySelectorAll('button').forEach(function(b){b.disabled=on;});}
+    function showDetail(){if(detail)return Promise.resolve(detail);if(loading)return loading;msg.textContent='正在读取题目…';busy(true);
+      loading=request('mistakeReviewDetail',ref(item)).then(function(d){detail=d;content.innerHTML=(d.passages||[]).map(function(p){return '<details class="review-passage" open><summary>阅读原文</summary><div class="review-passage-text">'+esc(p)+'</div></details>';}).join('')+'<h3 lang="en">'+esc(d.prompt)+'</h3>'+(d.sourcePages.length?'<p>原书题号：'+d.sourceNumber+'。请在下方原文页中找到对应题目。</p>':'')+'<div data-source-pages></div><ol class="review-options" type="A" lang="en">'+d.options.map(function(o){return '<li>'+esc(o||'见原文页')+'</li>';}).join('')+'<p class="review-history">'+(item.lastRedo?'最近一次重做：'+(item.lastRedo.correct?'答对':'还需复习'):'尚未重做')+'</p>';
+        var pageNode=content.querySelector('[data-source-pages]');
+        return Promise.all(d.sourcePages.map(function(page,index){var el=document.createElement('div');pageNode.appendChild(el);el.textContent='正在读取原文页…';function fetchPage(){return request('mistakeReviewPage',Object.assign(ref(item),{pageKey:page.key})).then(function(r){el.innerHTML='<button type="button" class="review-source-link" aria-label="放大原文第 '+(index+1)+' 页"><img alt="原文与选项，第 '+(index+1)+' 页"></button>';el.querySelector('img').src=r.dataUrl;el.querySelector('button').onclick=function(){var dialog=document.createElement('dialog');dialog.className='review-zoom';dialog.innerHTML='<button type="button">关闭原文</button><div><img alt="放大的原文与选项"></div>';dialog.querySelector('img').src=r.dataUrl;document.body.appendChild(dialog);dialog.querySelector('button').onclick=function(){dialog.close();};dialog.addEventListener('close',function(){dialog.remove();});dialog.showModal();};}).catch(function(e){el.innerHTML='<p>'+esc(e.message)+'</p><button type="button" class="button button-secondary">重试原文页</button>';el.querySelector('button').onclick=fetchPage;});}return fetchPage();})).then(function(){msg.textContent='';return d;});
+      }).catch(function(e){detail=null;error(msg,e);throw e;}).finally(function(){loading=null;busy(false);});return loading;
     }
-    return items.slice(-120);
+    card.addEventListener('toggle',function(){if(card.open)showDetail().catch(function(){});else{hideAnswer();form.hidden=true;}});
+    toggle.addEventListener('click',function(){if(!answer.hidden){hideAnswer();return;}form.hidden=true;busy(true);msg.textContent='正在读取答案…';request('mistakeReviewAnswer',ref(item)).then(function(r){answer.innerHTML='<p>原作业选择：<strong>'+esc(r.firstChoice||'未作答')+'</strong></p><p>正确答案：<strong>'+esc(r.correctAnswer)+'</strong> '+esc(r.correctText)+'</p>'+(r.reasoning?'<p>'+esc(r.reasoning)+'</p>':'')+(r.optionNotes||[]).map(function(n){return '<p>'+esc(n)+'</p>';}).join('');answer.hidden=false;toggle.textContent='隐藏答案';toggle.setAttribute('aria-expanded','true');msg.textContent='';}).catch(function(e){error(msg,e);}).finally(function(){busy(false);});});
+    card.querySelector('[data-redo]').addEventListener('click',function(){hideAnswer();showDetail().then(function(d){requestId=window.crypto.randomUUID();form.querySelector('[data-redo-options]').innerHTML=d.options.map(function(o,n){var letter='ABCDE'[n];return '<label class="review-choice"><input type="radio" name="redo-'+Number(card.dataset.reviewItem)+'" value="'+letter+'" required><span lang="en">'+letter+'. '+esc(o||'见原文页')+'</span></label>';}).join('');form.hidden=false;msg.textContent='请重新阅读并选择答案。';form.querySelector('input').focus();}).catch(function(){});});
+    card.querySelector('[data-cancel-redo]').addEventListener('click',function(){form.hidden=true;msg.textContent='';});
+    form.addEventListener('submit',function(e){e.preventDefault();var choice=form.querySelector('input:checked');if(!choice)return;busy(true);msg.textContent='正在检查…';request('mistakeReviewRedo',Object.assign(ref(item),{choice:choice.value,requestId:requestId})).then(function(r){form.hidden=true;item.redoCount=r.redoCount;item.lastRedo={correct:r.correct};msg.textContent=r.correct?'本次答对了。可以继续复习，或移出清单。':'本次还未答对。请回到原文核对，也可以显示答案。';content.querySelector('.review-history').textContent='已重做 '+r.redoCount+' 次 · 最近一次：'+(r.correct?'答对':'还需复习');}).catch(function(e){error(msg,e);}).finally(function(){busy(false);});});
+    card.querySelector('[data-remove]').addEventListener('click',function(){busy(true);request('mistakeReviewRemove',Object.assign(ref(item),{removed:!item.removed})).then(function(r){item.removed=r.removed;render();status.textContent=r.removed?'已移出清单，可在“已移除”中恢复。':'已恢复到清单。';viewFilter.focus();}).catch(function(e){error(msg,e);busy(false);});});
   }
-
-  function request(action, payload) {
-    payload.action = action;
-    payload.environment = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname) ? 'qa' : 'production';
-    return fetch(endpoint, {
-      method: 'POST',
-      redirect: 'follow',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    }).then(function (response) { return response.json(); });
-  }
-
-  function render(data) {
-    var mistakes = data.mistakes || [];
-    var reviewed = mistakes.filter(function (item) { return item.cause !== '待确认' && item.reviewed; }).length;
-    if (meter) meter.textContent = '已确认 ' + reviewed + ' / ' + mistakes.length;
-    if (!mistakes.length) {
-      listNode.innerHTML = '<p class="empty-state"><strong>暂无错题记录。</strong><br>正式提交作业或 Mock 后，wrong 与 omitted 会出现在这里。</p>';
-      status.textContent = '记录已更新。';
-      return;
-    }
-    listNode.innerHTML = mistakes.map(function (item) {
-      var options = causes.map(function (cause) { return '<option value="' + esc(cause) + '"' + (cause === item.cause ? ' selected' : '') + '>' + esc(cause) + '</option>'; }).join('');
-      return '<article class="mistake-card" data-mistake-card data-assignment-id="' + esc(item.assignmentId) + '" data-save-id="' + esc(item.saveId) + '" data-item-id="' + esc(item.itemId) + '">' +
-        '<header><span class="status-pill status-' + (item.result === 'omitted' ? 'conditional' : 'scheduled') + '">' + (item.result === 'omitted' ? 'omitted' : 'wrong') + '</span><h2>' + esc(item.assignmentTitle) + ' · ' + esc(item.label) + '</h2></header>' +
-        '<p class="mistake-meta">' + esc(item.section) + (item.family ? ' · ' + esc(item.family) : '') + '</p>' +
-        '<div class="mistake-controls"><label>错因<select data-mistake-cause>' + options + '</select></label>' +
-        '<label class="review-check"><input type="checkbox" data-mistake-reviewed' + (item.reviewed ? ' checked' : '') + '> 已完成复盘</label>' +
-        '<button class="button button-secondary" type="button" data-save-mistake>保存</button></div>' +
-        '</article>';
-    }).join('');
-    bindCards();
-    status.textContent = '记录已更新。';
-  }
-
-  function bindCards() {
-    document.querySelectorAll('[data-save-mistake]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var card = button.closest('[data-mistake-card]');
-        button.disabled = true;
-        status.textContent = '正在保存…';
-        request('updateMistake', {
-          assignmentId: card.dataset.assignmentId,
-          saveId: card.dataset.saveId,
-          itemId: card.dataset.itemId,
-          cause: card.querySelector('[data-mistake-cause]').value,
-          reviewed: card.querySelector('[data-mistake-reviewed]').checked
-        }).then(function (result) {
-          if (!result.ok) throw new Error(result.error || 'Save failed');
-          load();
-        }).catch(function () {
-          button.disabled = false;
-          status.textContent = '暂时未能保存，请稍后再试。';
-        });
-      });
-    });
-  }
-
-  function load() {
-    var savedSources = sources();
-    if (!savedSources.length) { render({ mistakes: [] }); return; }
-    status.textContent = '正在读取错题…';
-    var batches = [];
-    for (var index = 0; index < savedSources.length; index += 20) batches.push(savedSources.slice(index, index + 20));
-    Promise.all(batches.map(function (batch) { return request('getMistakes', { sources: batch }); })).then(function (results) {
-      var mistakes = [];
-      results.forEach(function (result) {
-        if (!result.ok) throw new Error(result.error || 'Load failed');
-        mistakes = mistakes.concat(result.mistakes || []);
-      });
-      mistakes.sort(function (a, b) { return (a.assignmentTitle + a.itemId).localeCompare(b.assignmentTitle + b.itemId); });
-      render({ mistakes: mistakes });
-    }).catch(function () { status.textContent = '暂时未能读取错题，请稍后再试。'; });
-  }
-
-  var refresh = document.querySelector('[data-refresh-mistakes]');
-  if (refresh) refresh.addEventListener('click', load);
-  load();
+  login.addEventListener('submit',function(e){e.preventDefault();var input=login.querySelector('input'),button=login.querySelector('button'),msg=document.querySelector('[data-login-status]'),password=input.value;button.disabled=true;msg.textContent='正在打开错题本…';
+    request('mistakeReviewLogin',{password:password}).then(function(r){session(r.token);input.value='';msg.textContent='';return load();}).catch(function(e){error(msg,e);}).finally(function(){password='';button.disabled=false;});});
+  typeFilter.addEventListener('change',render);viewFilter.addEventListener('change',render);
+  document.querySelector('[data-refresh-mistakes]').addEventListener('click',load);
+  document.querySelector('[data-review-lock]').addEventListener('click',lock);
+  try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
+  if(token)load();else{login.hidden=false;workspace.hidden=true;}
 }());
