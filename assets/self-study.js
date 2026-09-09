@@ -83,7 +83,9 @@
   }
 
   function completedIds() {
-    return controls().filter(function (input) { return input.checked; }).map(function (input) { return input.dataset.studyTask; });
+    var visibleIds = controls().map(function (input) { return input.dataset.studyTask; });
+    var retained = readState().filter(function (id) { return visibleIds.indexOf(id) === -1; });
+    return retained.concat(controls().filter(function (input) { return input.checked; }).map(function (input) { return input.dataset.studyTask; }));
   }
 
   function setStatus(message) {

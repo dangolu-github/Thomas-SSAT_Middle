@@ -29,7 +29,6 @@
         focus: ['Verbal：Synonyms 核心义、词性与跳题。', 'Reading：Authorial Intent；speaker、choice、ambiguity 与 tone。', '复盘：只处理已经提交的 Trial Reading 错题。'],
         tasks: [
           task('ss-vocab-0820', '8月19日 周三 · 课后 21:00前', '生词本', '录入 8月19日 Verbal 课堂生词', 'scheduled', ['加入课堂中不认识或不确定的词。', '只处理这次课堂内容。']),
-          task('ss-read-road-0821', '8月22日 周六 · 14:00课前', 'Reading Skill Booster', 'The Road Not Taken · 全诗', 'scheduled', ['在 Reading Skill Booster 页面展开并阅读全诗。', '关注 speaker、imagery、choice、ambiguity、tone。', '标出不认识或不确定的词；不要求逐段笔记。'], '../learning/reading-booster/#road-not-taken', [{ label: 'Project Gutenberg 全文', href: 'https://www.gutenberg.org/cache/epub/29345/pg29345-images.html#THE_ROAD_NOT_TAKEN' }, { label: 'Academy 参考页', href: 'https://poets.org/poem/road-not-taken' }]),
           task('ss-c02-poetry-q1-10-0823', 'Class 02 + Class 03', 'Reading 作业', 'Poetry Reading · Q1–Q20', 'assigned', ['完成 Reading 1：The Road Not Taken Q1–Q10。', '完成 Reading 2：In the Garden Q11–Q20。', '在同一答题窗口记录每题 A–E。', '确认 20 题答案后点击“提交作业”。'], '../practice/class-02-poetry/'),
           task('ss-c01-verbal-open', '8月23日 周日 · 10:00课前', 'Verbal 作业', 'Class 01 · Choice, Judgment, and Responsibility', 'assigned', ['完成 Synonyms Q1–15。', '完成 Analogies Q1–15。', '预计 30 分钟；在作业页面提交。', '将不认识或不确定的词加入生词本。'], '../practice/class-01-verbal/'),
           task('ss-c01-reading-open', '8月23日 周日 · 10:00课前', 'Reading 作业', 'Class 01 · The Shortcut at the Exhibit', 'assigned', ['阅读全文并完成 Q1–Q10。', '预计 25 分钟；在作业页面提交。', '将不认识或不确定的词加入生词本。'], '../practice/class-01-reading/'),
@@ -57,12 +56,11 @@
         tasks: [
           task('ss-vocab-0903', '9月2日 周三 · 无截止时间', '生词本', '整理 9月2日历史阅读新增词汇', 'assigned', ['复习课堂总结中的新增词汇。', '注意 measure / policy、right / power 与 adopt 的语境义。', '与 handout Vocabulary Bridge 的 12 个词去重。'], '../2026-09-02/class-summary.html'),
           task('ss-c07-reading-homework', '9月2日 周三 · 无截止时间', 'Reading 作业', 'Class 07 · From Grievance to Declaration', 'assigned', ['阅读四段文章并完成 Q1–Q10。', '每题选择 A–E，只使用文章证据。', '自动保存只是草稿；确认后点击“正式提交作业”。'], '../practice/class-07-reading/'),
-          task('ss-read-dragon-03-0904', '9月5日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 3', 'scheduled', ['阅读 Chapter 3。', '关注 Windrider 的 ambition、invention 与父子关系。'], '../learning/dragonwings/'),
           task('ss-practice-verbal-0904', '9月6日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先复习本周 Verbal 方法，并整理生词本。']),
-          task('ss-vocab-0906', '9月5日 周六 · 课后 20:00前', '生词本', '录入 9月5日 Reading 与 Chapter 3 生词', 'scheduled', ['合并课堂与章节生词并去重。']),
+          task('ss-vocab-0906', '9月5日 周六 · 课后 20:00前', '生词本', '录入 9月5日 Reading 课堂生词', 'scheduled', ['整理课堂生词并去重。']),
           task('ss-vocab-0907', '9月6日 周日 · 课后 20:00前', '生词本', '录入 9月6日复盘课生词', 'scheduled', ['保留仍不稳定的词。']),
           task('ss-mistake-0907', '9月6日 周日 · 10:00课前', '错题汇总', '汇总本周已提交练习的错因', 'scheduled', ['只处理已经提交后出现的错题。'], '../review/mistake-log/'),
-          task('ss-practice-reading-0908', '9月6日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先完成本周指定阅读，并复习 Reading 方法。'])
+          task('ss-practice-reading-0908', '9月6日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先复习本周 Reading 方法。'])
         ]
       },
       {
@@ -79,12 +77,11 @@
         focus: ['Verbal：Synonyms nuance、connotation 与程度。', 'Reading：灾难中的 risk、conflict、community response 与 tone。', '复盘：字面意思、表达效果和态度分开。'],
         tasks: [
           task('ss-vocab-0917', '9月16日 周三 · 课后 21:00前', '生词本', '录入 9月16日 Verbal 课堂生词', 'scheduled', ['加入近义词差别和主题词。']),
-          task('ss-read-dragon-09-10-0918', '9月19日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapters 9–10', 'scheduled', ['阅读 Chapters 9–10。', '关注 earthquake、risk、conflict 与 community response。'], '../learning/dragonwings/'),
-          task('ss-practice-verbal-0918', '9月20日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先完成本周课堂与指定阅读，再继续练习。']),
-          task('ss-vocab-0920', '9月19日 周六 · 课后 20:00前', '生词本', '录入 9月19日 Reading 与章节生词', 'scheduled', ['合并课堂与阅读生词。']),
+          task('ss-practice-verbal-0918', '9月20日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先复习本周课堂笔记，再继续练习。']),
+          task('ss-vocab-0920', '9月19日 周六 · 课后 20:00前', '生词本', '录入 9月19日 Reading 课堂生词', 'scheduled', ['整理课堂与已布置作业中的生词。']),
           task('ss-vocab-0921', '9月20日 周日 · 课后 20:00前', '生词本', '录入 9月20日复盘课生词并去重', 'scheduled', ['保留仍不稳定的词。']),
           task('ss-mistake-0921', '9月20日 周日 · 10:00课前', '错题汇总', '汇总本周已提交练习的错因', 'scheduled', ['只处理已经提交后出现的错题。'], '../review/mistake-log/'),
-          task('ss-practice-reading-0922', '9月20日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先完成本周课堂与指定阅读，再继续练习。'])
+          task('ss-practice-reading-0922', '9月20日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先复习本周课堂笔记，再继续练习。'])
         ]
       },
       {
@@ -93,8 +90,7 @@
         focus: ['Verbal：Analogies 难关系与同主题假关系。', 'Reading：人物目标、family、responsibility 与 community support。', '复盘：只处理已经提交并检查的本周错题。'],
         tasks: [
           task('ss-vocab-0924', '9月23日 周三 · 课后 21:00前', '生词本', '录入 9月23日 Verbal 课堂生词', 'scheduled', ['加入抽象关系词和主题词。']),
-          task('ss-read-dragon-12-0924', '9月26日 周六 · 14:00课前', 'Reading Skill Booster', 'Dragonwings · Chapter 12', 'scheduled', ['阅读 Chapter 12。', '关注 ambition、family、responsibility 与 community support。'], '../learning/dragonwings/'),
-          task('ss-vocab-0927', '9月26日 周六 · 课后 20:00前', '生词本', '录入 9月26日 Reading 课堂生词', 'scheduled', ['合并课堂与 Chapter 12 生词。']),
+          task('ss-vocab-0927', '9月26日 周六 · 课后 20:00前', '生词本', '录入 9月26日 Reading 课堂生词', 'scheduled', ['整理课堂生词。']),
           task('ss-vocab-0928', '9月27日 周日 · 课后 20:00前', '生词本', '录入 9月27日复盘课生词并去重', 'scheduled', ['只保留仍需复习的词。']),
           task('ss-mistake-0928', '9月27日 周日 · 10:00课前', '错题汇总', '汇总本周已提交练习的错因', 'scheduled', ['只处理已经提交后出现的错题。'], '../review/mistake-log/')
         ]
@@ -105,12 +101,11 @@
         focus: ['Verbal：Synonyms / Analogies 流程切换。', 'Reading：narrator、motivation、justice、power 与 tone。', '复盘：把人物判断和文本证据分开。'],
         tasks: [
           task('ss-vocab-1001', '9月30日 周三 · 课后 21:00前', '生词本', '录入 9月30日 Verbal 课堂生词', 'scheduled', ['加入流程切换和主题词。']),
-          task('ss-read-roll-01-1002', '10月3日 周六 · 14:00课前', 'Reading Skill Booster', 'Roll of Thunder, Hear My Cry · Chapter 1', 'scheduled', ['阅读 Chapter 1。', '关注 narrator、motivation、justice、power、tone。'], '../learning/reading-booster/#ss-read-roll-01-1002'),
-          task('ss-practice-verbal-1002', '10月4日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先完成本周课堂与指定阅读，再继续练习。']),
-          task('ss-vocab-1004', '10月3日 周六 · 课后 20:00前', '生词本', '录入 10月3日 Reading 与章节生词', 'scheduled', ['合并课堂与 Chapter 1 生词。']),
+          task('ss-practice-verbal-1002', '10月4日 周日 · 10:00课前', 'Verbal 练习', '本周 Verbal 复习', 'pending', ['先复习本周课堂笔记，再继续练习。']),
+          task('ss-vocab-1004', '10月3日 周六 · 课后 20:00前', '生词本', '录入 10月3日 Reading 课堂生词', 'scheduled', ['整理课堂生词。']),
           task('ss-vocab-1005', '10月4日 周日 · 课后 20:00前', '生词本', '录入 10月4日复盘课生词并去重', 'scheduled', ['保留仍不稳定的词。']),
           task('ss-mistake-1005', '10月4日 周日 · 10:00课前', '错题汇总', '汇总本周已提交练习的错因', 'scheduled', ['只处理已经提交后出现的错题。'], '../review/mistake-log/'),
-          task('ss-practice-reading-1006', '10月4日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先完成本周课堂与指定阅读，再继续练习。'])
+          task('ss-practice-reading-1006', '10月4日 周日 · 10:00课前', 'Reading 练习', '本周 Reading 复习', 'pending', ['先复习本周课堂笔记，再继续练习。'])
         ]
       },
       {
@@ -127,12 +122,10 @@
         focus: ['Verbal：只修最高频的决策错误。', 'Reading：setting、atmosphere、conflict、symbolism、foreshadowing。', '复盘：确认仍未修复的 Reading / Verbal 错因。'],
         tasks: [
           task('ss-vocab-1015', '10月14日 周三 · 课后 21:00前', '生词本', '录入 10月14日 Verbal 课堂生词', 'scheduled', ['只加入仍会影响判断的词。']),
-          task('ss-read-dark-01-03-1016', '10月17日 周六 · 14:00课前', 'Reading Skill Booster', 'The Dark Is Rising · Chapters 1–3', 'scheduled', ['阅读 Chapters 1–3。', '关注 setting、atmosphere、conflict、symbolism、foreshadowing。'], '../learning/reading-booster/#ss-read-dark-01-03-1016'),
           task('ss-practice-verbal-1016', '10月18日 周日 · 10:00课前', 'Verbal 练习', '个人 Verbal 高频错因复习', 'pending', ['先整理最新错题，再完成同类练习。']),
-          task('ss-vocab-1018', '10月17日 周六 · 课后 20:00前', '生词本', '录入 10月17日 Reading 与章节生词', 'scheduled', ['合并课堂与 Chapters 1–3 生词。']),
+          task('ss-vocab-1018', '10月17日 周六 · 课后 20:00前', '生词本', '录入 10月17日 Reading 课堂生词', 'scheduled', ['整理课堂生词。']),
           task('ss-vocab-1019', '10月18日 周日 · 课后 20:00前', '生词本', '录入 10月18日总复盘课生词并去重', 'scheduled', ['只保留个人高频词。']),
-          task('ss-mistake-final-1019', '10月18日 周日 · 10:00课前', '错题汇总', '确认尚未修复的高频错因', 'scheduled', ['检查 Reading 与 Verbal。', '只保留仍需要处理的项目。'], '../review/mistake-log/'),
-          task('ss-reading-review-1020', '10月18日 周日 · 10:00课前', 'Reading Skill Booster', '文学概念回顾', 'scheduled', ['不读新章节。', '回看 speaker / narrator、tone、motivation、setting、symbolism 的已读例子。'], '../learning/reading-booster/#ss-reading-review-1020')
+          task('ss-mistake-final-1019', '10月18日 周日 · 10:00课前', '错题汇总', '确认尚未修复的高频错因', 'scheduled', ['检查 Reading 与 Verbal。', '只保留仍需要处理的项目。'], '../review/mistake-log/')
         ]
       },
       {
