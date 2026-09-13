@@ -65,11 +65,11 @@
       },
       {
         label: '第4周 · 9月9–15日',
-        title: 'Belonging、Language Use 与 Mock 3',
+        title: 'Words、Mood 与 Literary Mock',
         focus: ['Verbal：Analogies 常见关系家族。', 'Reading：词句在上下文中的作用；跨文化 friendship。', '复盘：遗漏、二选一和关系误判。'],
         tasks: [
           task('ss-c11-reading-0912', '9月12日课堂作业 · 无截止日期', 'Reading Homework', 'Plastic in the Environment', 'assigned', ['完成完整文章、阅读短练习、七道选择题和一句总结。', '不限时；完成后点击正式提交作业。'], '../practice/class-11-reading/'),
-          task('ss-mock-03-0911', '9月11日 周五 · 20:00', 'Mock Exam', 'Mock 3 · 定制 Mid-course Transfer', 'scheduled', ['输入网站密码后进入完整 Mock 页面。', '试题与 A–E 作答区在同一页面。', 'Reading 1–40：40分钟；Verbal 1–60：30分钟。', '完成后正式提交，成绩稍后查看。'], '../practice/mock-exams/answer-sheet.html?mock=3')
+          task('ss-literary-mock-0913', '9月13日布置 · 无截止时间', 'Mock Exam', 'Literary Mock · Reading + Verbal', 'assigned', ['Reading 40题：8题诗歌、27题小说、5题艺术阅读。', 'Verbal 60题：30 Synonyms + 30 Analogies。', '不限时，可分次完成；答案自动保存为草稿。', '完成后点击正式提交，并确认提交成功。'], '../practice/literary-2026-09-13/')
         ]
       },
       {
