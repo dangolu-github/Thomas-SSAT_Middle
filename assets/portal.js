@@ -4,8 +4,6 @@
   var root = document.documentElement;
   var themeKey = 'thomas-ssat-theme';
   var collapseKey = 'thomas-ssat-section-state';
-  var accessKey = 'thomas-ssat-access';
-  var accessHash = '70369e3c';
   var plannerKey = 'thomas-ssat-weekly-review-plan-v1';
   var plannerSaveIdKey = plannerKey + '-save-id';
 
@@ -15,70 +13,36 @@
     });
   }
 
-  function hashWord(value) {
-    var hash = 2166136261;
-    for (var index = 0; index < value.length; index += 1) {
-      hash ^= value.charCodeAt(index);
-      hash = Math.imul(hash, 16777619);
-    }
-    return (hash >>> 0).toString(16);
-  }
-
+  var portalSessionKey = 'thomas-portal-session-v1';
+  var learnerService = 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec';
+  var publicBase = 'https://dangolu-github.github.io/Thomas-SSAT_Middle/';
+  function sessionGet(name) { try { return window[name].getItem(portalSessionKey) || ''; } catch (e) { return ''; } }
+  function sessionSet(name,token) { try { window[name].setItem(portalSessionKey,token); } catch (e) {} }
+  function sessionClear() { ['localStorage','sessionStorage'].forEach(function(name){try{window[name].removeItem(portalSessionKey);window[name].removeItem('thomas-ssat-access');}catch(e){}}); }
+  function freshPortalToken(token) { try { var p=JSON.parse(atob(token.split('.')[0].replace(/-/g,'+').replace(/_/g,'/')));return p.aud==='thomas-learner-portal'&&p.expiresAt>Date.now()&&/^[A-Za-z0-9_-]+\.[a-f0-9]{64}$/.test(token); } catch(e){return false;} }
+  function currentPortalToken() { var t=sessionGet('localStorage')||sessionGet('sessionStorage');return freshPortalToken(t)?t:''; }
   function setupAccessGate() {
-    if (document.body.dataset.access !== 'required') return true;
-
-    function hasTrustedAccess(storage) {
-      try { return storage.getItem(accessKey) === accessHash; }
-      catch (error) { return false; }
+    var fragment=new URLSearchParams(location.hash.slice(1));
+    if(fragment.get('thomas-logout')==='1'){sessionClear();history.replaceState(null,'',location.pathname+location.search);}
+    var incoming=fragment.get('thomas-session');
+    if(incoming){if(freshPortalToken(incoming)){sessionSet('localStorage',incoming);sessionSet('sessionStorage',incoming);}var anchor=fragment.get('thomas-anchor');history.replaceState(null,'',location.pathname+location.search+(anchor?'#'+encodeURIComponent(anchor):''));}
+    function resourceLink(event) {
+      var a=event.target.closest&&event.target.closest('a[href]'),token=currentPortalToken();if(!a||!token)return;
+      try {var u=new URL(a.href);if(u.origin+u.pathname!==learnerService||u.searchParams.get('view')==='portal-login')return;u.hash='thomas-session='+encodeURIComponent(token);a.href=u.href;}catch(e){}
     }
-
-    function rememberTrustedAccess() {
-      try {
-        localStorage.setItem(accessKey, accessHash);
-        return;
-      } catch (error) {
-        try { sessionStorage.setItem(accessKey, accessHash); }
-        catch (storageError) { /* Access remains valid for this page load only. */ }
-      }
-    }
-
-    if (hasTrustedAccess(localStorage) || hasTrustedAccess(sessionStorage)) {
-      rememberTrustedAccess();
-      document.body.dataset.access = 'granted';
+    ['click','auxclick','pointerdown','contextmenu'].forEach(function(type){document.addEventListener(type,resourceLink,true);});
+    if(document.body.dataset.access!=='required')return true;
+    if(currentPortalToken()) {
+      document.body.dataset.access='granted';
+      var nav=document.querySelector('header nav');if(nav){var logout=document.createElement('a');logout.href=learnerService+'?view=portal-login&logout=1';logout.textContent='退出登录';logout.addEventListener('click',sessionClear);nav.append(logout);}
       return true;
     }
-
-    document.body.dataset.access = 'locked';
-    var gate = document.createElement('main');
-    gate.className = 'access-gate';
-    gate.innerHTML = '<form class="access-card" data-access-form>' +
-      '<span class="brand-mark" aria-hidden="true">T</span>' +
-      '<p class="eyebrow">Thomas SSAT</p>' +
-      '<h1>进入 Thomas 的学习空间</h1>' +
-      '<p>请输入访问密码。</p>' +
-      '<p class="access-note">输入密码后即可进入；本浏览器会记住登录状态。</p>' +
-      '<label for="portal-access">访问密码</label>' +
-      '<input id="portal-access" name="access" type="password" autocomplete="current-password" required>' +
-      '<button class="button button-primary" type="submit">进入学习空间</button>' +
-      '<p class="access-error" role="alert" aria-live="polite"></p>' +
-      '</form>';
-    document.body.prepend(gate);
-    var form = gate.querySelector('[data-access-form]');
-    var input = form.elements.access;
-    var error = gate.querySelector('.access-error');
-    input.focus();
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      if (hashWord(input.value.trim()) !== accessHash) {
-        error.textContent = '密码不正确，请再试一次。';
-        input.select();
-        return;
-      }
-      rememberTrustedAccess();
-      document.body.dataset.access = 'granted';
-      gate.remove();
-    });
-    return false;
+    document.body.dataset.access='locked';
+    var gate=document.createElement('main');gate.className='access-gate';
+    gate.innerHTML='<div class="access-card"><span class="brand-mark" aria-hidden="true">T</span><p class="eyebrow">Thomas SSAT</p><h1>进入 Thomas 的学习空间</h1><p>登录一次，即可打开课堂讲义和学习资料。</p><a class="button button-primary" data-site-login>进入学习空间</a></div>';
+    var next=location.pathname.indexOf('/Thomas-SSAT_Middle/')===0?location.pathname.slice('/Thomas-SSAT_Middle/'.length):'';
+    gate.querySelector('[data-site-login]').href=learnerService+'?view=portal-login&next='+encodeURIComponent(next);
+    document.body.prepend(gate);return false;
   }
 
   function preferredTheme() {
