@@ -16,19 +16,26 @@
   var portalSessionKey = 'thomas-portal-session-v1';
   var learnerService = 'https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec';
   var publicBase = 'https://dangolu-github.github.io/Thomas-SSAT_Middle/';
+  var memoryToken='';
   function sessionGet(name) { try { return window[name].getItem(portalSessionKey) || ''; } catch (e) { return ''; } }
   function sessionSet(name,token) { try { window[name].setItem(portalSessionKey,token); } catch (e) {} }
-  function sessionClear() { ['localStorage','sessionStorage'].forEach(function(name){try{window[name].removeItem(portalSessionKey);window[name].removeItem('thomas-ssat-access');}catch(e){}}); }
+  function sessionClear() { memoryToken='';['localStorage','sessionStorage'].forEach(function(name){try{window[name].removeItem(portalSessionKey);window[name].removeItem('thomas-ssat-access');}catch(e){}}); }
   function freshPortalToken(token) { try { var p=JSON.parse(atob(token.split('.')[0].replace(/-/g,'+').replace(/_/g,'/')));return p.aud==='thomas-learner-portal'&&p.expiresAt>Date.now()&&/^[A-Za-z0-9_-]+\.[a-f0-9]{64}$/.test(token); } catch(e){return false;} }
-  function currentPortalToken() { var t=sessionGet('localStorage')||sessionGet('sessionStorage');return freshPortalToken(t)?t:''; }
+  function currentPortalToken() { return [memoryToken,sessionGet('localStorage'),sessionGet('sessionStorage')].filter(freshPortalToken)[0]||''; }
   function setupAccessGate() {
     var fragment=new URLSearchParams(location.hash.slice(1));
     if(fragment.get('thomas-logout')==='1'){sessionClear();history.replaceState(null,'',location.pathname+location.search);}
     var incoming=fragment.get('thomas-session');
-    if(incoming){if(freshPortalToken(incoming)){sessionSet('localStorage',incoming);sessionSet('sessionStorage',incoming);}var anchor=fragment.get('thomas-anchor');history.replaceState(null,'',location.pathname+location.search+(anchor?'#'+encodeURIComponent(anchor):''));}
+    if(incoming){if(freshPortalToken(incoming)){memoryToken=incoming;sessionSet('localStorage',incoming);sessionSet('sessionStorage',incoming);}var anchor=fragment.get('thomas-anchor');history.replaceState(null,'',location.pathname+location.search+(anchor?'#'+encodeURIComponent(anchor):''));}
     function resourceLink(event) {
       var a=event.target.closest&&event.target.closest('a[href]'),token=currentPortalToken();if(!a||!token)return;
-      try {var u=new URL(a.href);if(u.origin+u.pathname!==learnerService||u.searchParams.get('view')==='portal-login')return;u.hash='thomas-session='+encodeURIComponent(token);a.href=u.href;}catch(e){}
+      try {
+        if(a.getAttribute('href').charAt(0)==='#')return;
+        var u=new URL(a.href),base=new URL(publicBase),samePortal=u.origin===base.origin&&u.pathname.indexOf(base.pathname)===0;
+        if(!samePortal&&(u.origin+u.pathname!==learnerService||u.searchParams.get('view')==='portal-login'))return;
+        var anchor=samePortal?(u.hash.indexOf('thomas-session=')!==-1?new URLSearchParams(u.hash.slice(1)).get('thomas-anchor'):u.hash.slice(1)):'';
+        u.hash=(anchor?'thomas-anchor='+encodeURIComponent(anchor)+'&':'')+'thomas-session='+encodeURIComponent(token);a.href=u.href;
+      }catch(e){}
     }
     ['click','auxclick','pointerdown','contextmenu'].forEach(function(type){document.addEventListener(type,resourceLink,true);});
     if(document.body.dataset.access!=='required')return true;
@@ -46,7 +53,7 @@
   }
 
   function preferredTheme() {
-    var saved = localStorage.getItem(themeKey);
+    var saved;try { saved = localStorage.getItem(themeKey); } catch(e) {}
     if (saved === 'light' || saved === 'dark') return saved;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
@@ -69,7 +76,7 @@
     document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
       button.addEventListener('click', function () {
         var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        localStorage.setItem(themeKey, next);
+        try { localStorage.setItem(themeKey, next); } catch(e) {}
         applyTheme(next);
       });
     });
