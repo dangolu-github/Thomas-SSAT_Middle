@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',function(){var token='';['localStorage','sessionStorage'].some(function(k){try{token=window[k].getItem('thomas-portal-session-v1')||'';}catch(e){}return !!token;});document.querySelectorAll('iframe[data-protected-src]').forEach(function(f){f.src=f.dataset.protectedSrc+(token?'#thomas-session='+encodeURIComponent(token):'');});});
