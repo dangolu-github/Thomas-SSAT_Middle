@@ -5,7 +5,7 @@ window.THOMAS_MOCKS = {
     '2': {
       id: 'THO-SSAT-MOCK-02-TUTORVERSE-A',
       taskId: 'ss-mock-02-0828',
-      label: 'Mock 2',
+      label: 'Mock 1',
       title: '定制 Early Diagnostic',
       due: '8月28日 周五 · 20:00',
       source: '题目、A–E 作答和分科计时都在同一页面。',
