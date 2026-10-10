@@ -1,13 +1,17 @@
 (function () {
   'use strict';
   var endpoint='https://script.google.com/macros/s/AKfycbzF6aQZPpbL34Of--5r8zRZGI8Av2e8zTp11D_w820I9fNzLEAyY_YtvzLZ0-OVPFFw/exec';
-  var tokenKey='thomas-ssat-review-session-v2',token='',items=[],generation=0,pageRedo=null,cardActions=[];
+  var tokenKey='thomas-ssat-review-session-v2',expandKey='thomas-ssat-review-expand-all-v1',PAGE_SIZE=20,token='',items=[],generation=0,pageRedo=null,cardActions=[],pageIndex=0,lastPageCount=1,expandAll=false,detailCache={},pageCache={};
   var list=document.querySelector('[data-mistake-list]'),status=document.querySelector('[data-mistake-status]'),meter=document.querySelector('[data-mistake-meter]');
   var login=document.querySelector('[data-review-login]'),workspace=document.querySelector('[data-review-workspace]'),typeFilter=document.querySelector('[data-type-filter]'),viewFilter=document.querySelector('[data-view-filter]');
+  var expandToggle=document.querySelector('[data-expand-all]'),pagers=Array.from(document.querySelectorAll('[data-pager]'));
   var startRedo=document.querySelector('[data-redo-page]'),checkRedo=document.querySelector('[data-check-page]'),cancelRedo=document.querySelector('[data-cancel-page]'),redoStatus=document.querySelector('[data-page-redo-status]');
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function session(value){token=value;try{if(value)localStorage.setItem(tokenKey,value);else localStorage.removeItem(tokenKey);}catch(e){}}
-  function lock(){pageRedo=null;cardActions=[];session('');generation++;list.innerHTML='';items=[];workspace.hidden=true;login.hidden=false;}
+  function lock(){pageRedo=null;cardActions=[];session('');generation++;list.innerHTML='';items=[];pageIndex=0;detailCache={};pageCache={};pagers.forEach(function(p){p.hidden=true;});workspace.hidden=true;login.hidden=false;}
+  function cacheKey(i){return [i.assignmentId,i.saveId,i.receiptTime,i.itemId].join('|');}
+  function fetchDetail(i){var k=cacheKey(i);if(detailCache[k])return Promise.resolve(detailCache[k]);return request('mistakeReviewDetail',ref(i)).then(function(d){detailCache[k]=d;return d;});}
+  function fetchPage(i,pageKey){var k=cacheKey(i)+'|'+pageKey;if(pageCache[k])return Promise.resolve(pageCache[k]);return request('mistakeReviewPage',Object.assign(ref(i),{pageKey:pageKey})).then(function(r){pageCache[k]=r;return r;});}
   var requestQueue=[],activeRequests=0;
   function request(action,p){return new Promise(function(resolve,reject){requestQueue.push(function(){return sendRequest(action,p).then(resolve,reject);});drainRequests();});}
   function drainRequests(){while(activeRequests<4&&requestQueue.length){activeRequests++;requestQueue.shift()().finally(function(){activeRequests--;drainRequests();});}}
@@ -22,22 +26,37 @@
     typeFilter.innerHTML='<option value="">全部题型</option>'+types.map(function(t){return '<option>'+esc(t)+'</option>';}).join('');if(types.indexOf(chosen)>=0)typeFilter.value=chosen;
     login.hidden=true;workspace.hidden=false;render();status.textContent='已读取 '+r.submittedAssignments+' 份正式提交的作业。';
   }).catch(function(e){error(status,e);if(!token)document.querySelector('[data-login-status]').textContent=e.message;});}
-  function render(){cardActions=[];pageRedo=null;updatePageControls();var removed=viewFilter.value==='removed',visible=items.filter(function(i){return i.removed===removed&&(!typeFilter.value||i.questionType===typeFilter.value);});
+  function render(){cardActions=[];pageRedo=null;var removed=viewFilter.value==='removed',visible=items.filter(function(i){return i.removed===removed&&(!typeFilter.value||i.questionType===typeFilter.value);});
     var count=items.filter(function(i){return !i.removed;}).length;
     meter.textContent='清单 '+count+' 题 · 已移除 '+(items.length-count)+' 题';
-    startRedo.disabled=!visible.length;startRedo.textContent='重做本页（'+visible.length+' 题）';
-    if(!visible.length){list.innerHTML='<p class="empty-state">'+(items.length?'当前筛选下没有题目。':'还没有已提交的错题。正式提交作业后，错题和未答题会自动出现在这里。')+'</p>';return;}
     var groups={};visible.forEach(function(i){var key=i.section+' · '+i.questionType;(groups[key]||(groups[key]=[])).push(i);});
-    list.innerHTML=Object.keys(groups).sort().map(function(key){return '<details class="review-group" open><summary>'+esc(key)+' <span>'+groups[key].length+' 题</span></summary><div class="review-group-items">'+groups[key].map(function(i){var index=items.indexOf(i);return '<details class="mistake-card" data-review-item="'+index+'"><summary><span class="review-result">'+(i.result==='omitted'?'未作答':'错题')+'</span><strong>'+esc(i.assignmentTitle)+' · '+esc(i.label)+'</strong><span class="review-item-type">'+esc(i.prompt||i.questionType)+'</span><small>'+esc(new Date(i.receiptTime).toLocaleDateString('zh-CN'))+(i.redoCount?' · 已重做 '+i.redoCount+' 次':'')+'</small></summary><div class="review-item-body"><p data-card-status role="status"></p><div data-question-content></div><div class="review-buttons"><button class="button button-secondary" type="button" data-answer-toggle aria-expanded="false">显示答案</button><button class="button button-secondary" type="button" data-remove>'+ (i.removed?'恢复到清单':'移出清单')+'</button></div><div class="review-answer" data-answer hidden></div><div data-redo-form hidden><fieldset><legend>重新选择答案</legend><div data-redo-options></div></fieldset></div></div></details>';}).join('')+'</div></details>';}).join('');
+    var keys=Object.keys(groups).sort(),ordered=[];keys.forEach(function(key){ordered=ordered.concat(groups[key]);});
+    var pageCount=Math.max(1,Math.ceil(ordered.length/PAGE_SIZE));pageIndex=Math.min(Math.max(pageIndex,0),pageCount-1);
+    var shown=ordered.slice(pageIndex*PAGE_SIZE,(pageIndex+1)*PAGE_SIZE);
+    startRedo.disabled=!shown.length;startRedo.textContent='重做本页（'+shown.length+' 题）';
+    renderPagers(ordered.length,pageCount);updatePageControls();updateExpandToggle();
+    if(!visible.length){list.innerHTML='<p class="empty-state">'+(items.length?'当前筛选下没有题目。':'还没有已提交的错题。正式提交作业后，错题和未答题会自动出现在这里。')+'</p>';return;}
+    var pageGroups={};shown.forEach(function(i){var key=i.section+' · '+i.questionType;(pageGroups[key]||(pageGroups[key]=[])).push(i);});
+    list.innerHTML=keys.filter(function(key){return pageGroups[key];}).map(function(key){var total=groups[key].length,here=pageGroups[key].length;return '<details class="review-group" open><summary>'+esc(key)+' <span>'+(here===total?total+' 题':'本页 '+here+' 题 · 共 '+total+' 题')+'</span></summary><div class="review-group-items">'+pageGroups[key].map(function(i){var index=items.indexOf(i);return '<details class="mistake-card" data-review-item="'+index+'"><summary><span class="review-result">'+(i.result==='omitted'?'未作答':'错题')+'</span><strong>'+esc(i.assignmentTitle)+' · '+esc(i.label)+'</strong><span class="review-item-type">'+esc(i.prompt||i.questionType)+'</span><small>'+esc(new Date(i.receiptTime).toLocaleDateString('zh-CN'))+(i.redoCount?' · 已重做 '+i.redoCount+' 次':'')+'</small></summary><div class="review-item-body"><p data-card-status role="status"></p><div data-question-content></div><div class="review-buttons"><button class="button button-secondary" type="button" data-answer-toggle aria-expanded="false">显示答案</button><button class="button button-secondary" type="button" data-remove>'+ (i.removed?'恢复到清单':'移出清单')+'</button></div><div class="review-answer" data-answer hidden></div><div data-redo-form hidden><fieldset><legend>重新选择答案</legend><div data-redo-options></div></fieldset></div></div></details>';}).join('')+'</div></details>';}).join('');
     list.querySelectorAll('[data-review-item]').forEach(bindCard);
+    if(expandAll)list.querySelectorAll('.mistake-card').forEach(function(c){c.open=true;});
   }
+  function renderPagers(total,pageCount){lastPageCount=pageCount;var first=total?pageIndex*PAGE_SIZE+1:0,last=Math.min(total,(pageIndex+1)*PAGE_SIZE);
+    pagers.forEach(function(p){p.hidden=pageCount<=1;if(p.hidden)return;
+      p.querySelector('[data-pager-status]').textContent='第 '+(pageIndex+1)+' / '+pageCount+' 页 · 第 '+first+'–'+last+' 题，共 '+total+' 题';
+      var opts='';for(var n=0;n<pageCount;n++)opts+='<option value="'+n+'"'+(n===pageIndex?' selected':'')+'>第 '+(n+1)+' 页</option>';p.querySelector('[data-pager-jump]').innerHTML=opts;});
+  }
+  function goToPage(n){if(pageRedo&&!pageRedo.finished)return;var target=Math.min(Math.max(Number(n)||0,0),lastPageCount-1);if(target===pageIndex)return;pageIndex=target;render();
+    var top=pagers[0];if(top&&!top.hidden){if(top.scrollIntoView)top.scrollIntoView({block:'start',behavior:'instant'});var s=top.querySelector('[data-pager-status]');if(s&&s.focus)s.focus({preventScroll:true});}
+  }
+  function updateExpandToggle(){if(!expandToggle)return;expandToggle.setAttribute('aria-pressed',expandAll?'true':'false');expandToggle.textContent=expandAll?'收起全部题目':'展开全部题目';}
   function bindCard(card){var item=items[Number(card.dataset.reviewItem)],msg=card.querySelector('[data-card-status]'),content=card.querySelector('[data-question-content]'),form=card.querySelector('[data-redo-form]'),answer=card.querySelector('[data-answer]'),toggle=card.querySelector('[data-answer-toggle]'),detail=null,loading=null;
     function hideAnswer(){answer.hidden=true;answer.textContent='';toggle.textContent='显示答案';toggle.setAttribute('aria-expanded','false');}
     function busy(on){card.querySelectorAll('button').forEach(function(b){b.disabled=on||!!(pageRedo&&!pageRedo.finished&&(b===toggle||b.hasAttribute('data-remove')));});}
     function showDetail(){if(detail)return Promise.resolve(detail);if(loading)return loading;msg.textContent='正在读取题目…';busy(true);
-      loading=request('mistakeReviewDetail',ref(item)).then(function(d){detail=d;content.innerHTML=(d.passages||[]).map(function(p){return '<details class="review-passage" open><summary>阅读原文</summary><div class="review-passage-text">'+esc(p.replace(/(Poetry Reading [12] · [^\n]+?)(?=1[A-Z])/g,'$1\n\n').replace(/^(\d+)(?=[A-Za-z"])/gm,'$1  '))+'</div></details>';}).join('')+'<h3 lang="en">'+esc(d.prompt)+'</h3>'+(d.sourcePages.length?'<p>原书题号：'+d.sourceNumber+'。请在下方原文页中找到对应题目。</p>':'')+'<div data-source-pages></div><ol class="review-options" type="A" lang="en">'+d.options.map(function(o){return '<li>'+esc(o||'见原文页')+'</li>';}).join('')+'<p class="review-history">'+(item.lastRedo?'最近一次重做：'+(item.lastRedo.correct?'答对':'还需复习'):'尚未重做')+'</p>';
+      loading=fetchDetail(item).then(function(d){detail=d;content.innerHTML=(d.passages||[]).map(function(p){return '<details class="review-passage" open><summary>阅读原文</summary><div class="review-passage-text">'+esc(p.replace(/(Poetry Reading [12] · [^\n]+?)(?=1[A-Z])/g,'$1\n\n').replace(/^(\d+)(?=[A-Za-z"])/gm,'$1  '))+'</div></details>';}).join('')+'<h3 lang="en">'+esc(d.prompt)+'</h3>'+(d.sourcePages.length?'<p>原书题号：'+d.sourceNumber+'。请在下方原文页中找到对应题目。</p>':'')+'<div data-source-pages></div><ol class="review-options" type="A" lang="en">'+d.options.map(function(o){return '<li>'+esc(o||'见原文页')+'</li>';}).join('')+'<p class="review-history">'+(item.lastRedo?'最近一次重做：'+(item.lastRedo.correct?'答对':'还需复习'):'尚未重做')+'</p>';
         var pageNode=content.querySelector('[data-source-pages]');
-        return Promise.all(d.sourcePages.map(function(page,index){var el=document.createElement('div');pageNode.appendChild(el);el.textContent='正在读取原文页…';function fetchPage(){return request('mistakeReviewPage',Object.assign(ref(item),{pageKey:page.key})).then(function(r){el.innerHTML='<button type="button" class="review-source-link" aria-label="放大原文第 '+(index+1)+' 页"><img alt="原文与选项，第 '+(index+1)+' 页"></button>';el.querySelector('img').src=r.dataUrl;el.querySelector('button').onclick=function(){var dialog=document.createElement('dialog');dialog.className='review-zoom';dialog.innerHTML='<button type="button">关闭原文</button><div><img alt="放大的原文与选项"></div>';dialog.querySelector('img').src=r.dataUrl;document.body.appendChild(dialog);dialog.querySelector('button').onclick=function(){dialog.close();};dialog.addEventListener('close',function(){dialog.remove();});dialog.showModal();};}).catch(function(e){el.innerHTML='<p>'+esc(e.message)+'</p><button type="button" class="button button-secondary">重试原文页</button>';el.querySelector('button').onclick=fetchPage;});}return fetchPage();})).then(function(){if(pageRedo&&pageRedo.finished){var n=pageRedo.cards.indexOf(action);if(n>=0)action.result(pageRedo.results[n]);}else msg.textContent='';return d;});
+        return Promise.all(d.sourcePages.map(function(page,index){var el=document.createElement('div');pageNode.appendChild(el);el.textContent='正在读取原文页…';function loadPage(){return fetchPage(item,page.key).then(function(r){el.innerHTML='<button type="button" class="review-source-link" aria-label="放大原文第 '+(index+1)+' 页"><img alt="原文与选项，第 '+(index+1)+' 页"></button>';el.querySelector('img').src=r.dataUrl;el.querySelector('button').onclick=function(){var dialog=document.createElement('dialog');dialog.className='review-zoom';dialog.innerHTML='<button type="button">关闭原文</button><div><img alt="放大的原文与选项"></div>';dialog.querySelector('img').src=r.dataUrl;document.body.appendChild(dialog);dialog.querySelector('button').onclick=function(){dialog.close();};dialog.addEventListener('close',function(){dialog.remove();});dialog.showModal();};}).catch(function(e){el.innerHTML='<p>'+esc(e.message)+'</p><button type="button" class="button button-secondary">重试原文页</button>';el.querySelector('button').onclick=loadPage;});}return loadPage();})).then(function(){if(pageRedo&&pageRedo.finished){var n=pageRedo.cards.indexOf(action);if(n>=0)action.result(pageRedo.results[n]);}else msg.textContent='';return d;});
       }).catch(function(e){detail=null;error(msg,e);throw e;}).finally(function(){loading=null;busy(false);});return loading;
     }
     card.addEventListener('toggle',function(){if(card.open)showDetail().catch(function(){});else{hideAnswer();if(!pageRedo)form.hidden=true;}});
@@ -51,6 +70,7 @@
   }
   function updatePageControls(){var active=!!pageRedo,working=active&&!pageRedo.finished;
     typeFilter.disabled=working;viewFilter.disabled=working;document.querySelector('[data-refresh-mistakes]').disabled=working;
+    pagers.forEach(function(p){p.querySelector('[data-pager-prev]').disabled=working||pageIndex<=0;p.querySelector('[data-pager-next]').disabled=working||pageIndex>=lastPageCount-1;p.querySelector('[data-pager-jump]').disabled=working;});
     startRedo.hidden=working;checkRedo.hidden=!working;cancelRedo.hidden=!working;
     checkRedo.disabled=!!(active&&pageRedo.checking);cancelRedo.disabled=!!(active&&pageRedo.checking);
     if(!active){redoStatus.textContent='';return;}
@@ -75,7 +95,11 @@
   });
   login.addEventListener('submit',function(e){e.preventDefault();var input=login.querySelector('input'),button=login.querySelector('button'),msg=document.querySelector('[data-login-status]'),password=input.value;button.disabled=true;msg.textContent='正在打开错题本…';
     request('mistakeReviewLogin',{password:password}).then(function(r){session(r.token);input.value='';msg.textContent='';return load();}).catch(function(e){error(msg,e);}).finally(function(){password='';button.disabled=false;});});
-  typeFilter.addEventListener('change',render);viewFilter.addEventListener('change',render);
+  function filterChanged(){pageIndex=0;render();}
+  typeFilter.addEventListener('change',filterChanged);viewFilter.addEventListener('change',filterChanged);
+  pagers.forEach(function(p){p.querySelector('[data-pager-prev]').addEventListener('click',function(){goToPage(pageIndex-1);});p.querySelector('[data-pager-next]').addEventListener('click',function(){goToPage(pageIndex+1);});p.querySelector('[data-pager-jump]').addEventListener('change',function(e){goToPage(e.target.value);});});
+  if(expandToggle)expandToggle.addEventListener('click',function(){expandAll=!expandAll;try{if(expandAll)localStorage.setItem(expandKey,'1');else localStorage.removeItem(expandKey);}catch(e){}updateExpandToggle();list.querySelectorAll('.mistake-card').forEach(function(c){c.open=expandAll;});});
+  try{expandAll=localStorage.getItem(expandKey)==='1';}catch(e){}updateExpandToggle();
   document.querySelector('[data-refresh-mistakes]').addEventListener('click',load);
   document.querySelector('[data-review-lock]').addEventListener('click',lock);
   try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
