@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><link rel="icon" href="data:,">
+  <title>错题重练 | Thomas SSAT</title>
+  <link rel="stylesheet" href="../../assets/portal.css"><link rel="stylesheet" href="../../assets/homework.css">
+  <link rel="stylesheet" href="../../assets/mistake-review.css?v=20261010-2">
+  <script src="../../assets/portal.js" defer></script><script src="../../assets/mistake-practice.js?v=20261010-1" defer></script>
+</head>
+<body data-page="review" data-access="review-auth">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="subpage-shell">
+    <header class="subpage-nav">
+      <a class="brand brand-inline" href="../../"><span class="brand-mark" aria-hidden="true">T</span><span><strong>Thomas SSAT</strong><small>学习空间</small></span></a>
+      <nav aria-label="课程导航"><a href="../../">课程首页</a><a href="../../learning/">学习方法</a><a href="../../practice/">作业与模考</a><a class="is-active" href="../" aria-current="page">错题复盘</a><a href="../../planner/">自学规划</a></nav>
+      <button class="icon-button" type="button" data-theme-toggle aria-label="切换配色">配色</button>
+    </header>
+    <main id="main" class="subpage-main">
+      <header class="page-intro"><p class="eyebrow">Mistake Practice</p><h1>随机组一组错题，完成后自动批改。</h1><p>题目都来自你的错题本。选一个模式开始；完成并批改后，每道题会记下错了几次、连对几次。</p></header>
+      <form class="review-login" data-practice-login hidden>
+        <h2>打开错题重练</h2><p>输入网站访问密码，从已提交的错题里组题。</p>
+        <label>访问密码<input type="password" autocomplete="current-password" required></label>
+        <button class="button button-primary" type="submit">开始组题</button><p data-login-status role="status"></p>
+      </form>
+      <div data-practice-workspace hidden>
+        <section class="planner-toolbar" aria-label="题库">
+          <p class="planner-meter" data-pool-meter aria-live="polite"></p>
+          <div class="planner-actions"><a class="button button-secondary" href="../mistake-log/">打开错题本</a><button class="button button-secondary" type="button" data-practice-lock>关闭</button></div>
+          <p class="planner-status" data-pool-status aria-live="polite"></p>
+        </section>
+        <section data-mode-picker aria-labelledby="mode-title">
+          <h2 id="mode-title">选择模式</h2>
+          <div class="mode-grid" role="radiogroup" aria-label="练习模式">
+            <button class="mode-card" type="button" role="radio" aria-checked="true" data-mode="full"><strong>正式</strong><span>同义词 30 · 类比 30 · 阅读约 40 题</span><small data-mode-count="full"></small></button>
+            <button class="mode-card" type="button" role="radio" aria-checked="false" data-mode="half"><strong>中等</strong><span>同义词 15 · 类比 15 · 阅读约 20 题</span><small data-mode-count="half"></small></button>
+            <button class="mode-card" type="button" role="radio" aria-checked="false" data-mode="light"><strong>轻量</strong><span>同义词 5 · 类比 5 · 阅读 2 篇</span><small data-mode-count="light"></small></button>
+            <button class="mode-card" type="button" role="radio" aria-checked="false" data-mode="flash"><strong>闪卡</strong><span>只练 Verbal：翻面看答案，自评会了或再练</span><small data-mode-count="flash"></small></button>
+          </div>
+          <div class="mode-options">
+            <label class="mode-option"><input type="checkbox" data-opt-priority checked><span>优先抽没答对过的题</span></label>
+            <label class="mode-option"><input type="checkbox" data-opt-exclude-stable checked><span>不抽稳定题（已连对 3 次且跨 2 天）</span></label>
+            <div class="mode-flash-options" data-flash-options hidden>
+              <label>闪卡范围<select data-flash-kind><option value="both">同义词 + 类比</option><option value="syn">只要同义词</option><option value="ana">只要类比</option></select></label>
+              <label>张数<select data-flash-size><option value="10">10 张</option><option value="20" selected>20 张</option><option value="all">全部</option></select></label>
+            </div>
+          </div>
+          <div class="review-buttons"><button class="button button-primary" type="button" data-start>开始这一组</button></div>
+          <p data-mode-status role="status" aria-live="polite"></p>
+        </section>
+        <section data-practice-run hidden aria-labelledby="run-title">
+          <div class="review-page-actions practice-bar">
+            <div class="review-buttons"><button class="button button-primary" type="button" data-submit>完成并批改</button><button class="button button-secondary" type="button" data-abandon>放弃本组</button><button class="button button-primary" type="button" data-abandon-confirm hidden>确认放弃</button><button class="button button-secondary" type="button" data-abandon-cancel hidden>继续作答</button></div>
+            <p data-run-progress aria-live="polite"></p><p data-run-status role="status" aria-live="polite"></p>
+          </div>
+          <h2 id="run-title" tabindex="-1" data-run-title></h2>
+          <div class="practice-list" data-practice-list></div>
+          <div class="review-buttons practice-bottom"><button class="button button-primary" type="button" data-submit-bottom>完成并批改</button></div>
+        </section>
+        <section data-practice-result hidden aria-labelledby="result-title">
+          <h2 id="result-title" tabindex="-1" data-result-title></h2>
+          <p data-result-summary></p>
+          <div class="review-buttons"><button class="button button-secondary" type="button" data-show-all-answers aria-pressed="false">显示全部答案</button><button class="button button-primary" type="button" data-again>再练一组（同模式）</button><button class="button button-secondary" type="button" data-back-modes>换个模式</button></div>
+          <div class="practice-list" data-result-list></div>
+        </section>
+        <section data-flash-run hidden aria-labelledby="flash-title">
+          <h2 id="flash-title" tabindex="-1">闪卡</h2>
+          <p data-flash-progress aria-live="polite"></p>
+          <div class="flash-card" data-flash-card>
+            <div class="flash-face" data-flash-front></div>
+            <div class="flash-face flash-back" data-flash-back hidden></div>
+          </div>
+          <div class="review-buttons"><button class="button button-primary" type="button" data-flash-flip>翻面看答案</button><button class="button button-primary" type="button" data-flash-known hidden>会了</button><button class="button button-secondary" type="button" data-flash-again hidden>再练</button><button class="button button-secondary" type="button" data-flash-quit>退出闪卡</button></div>
+          <div data-flash-done hidden><p data-flash-summary></p><div class="review-buttons"><button class="button button-primary" type="button" data-flash-save>完成并记录</button><button class="button button-secondary" type="button" data-flash-restart>再来一组</button></div></div>
+          <p data-flash-status role="status" aria-live="polite"></p>
+        </section>
+      </div>
+    </main>
+    <footer class="site-footer"><a href="../">返回错题复盘</a><button type="button" class="text-button" data-print>打印或保存 PDF</button></footer>
+  </div>
+</body>
+</html>
