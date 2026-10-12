@@ -1,5 +1,6 @@
 // Class Words / Vocabulary page. Lists come from the learner service after the central portal sign-in.
-// Views: by unit (theme words / question-type words), by theme, by date; `?class=NN` shows one class's words.
+// Views: by unit (theme words / question-type words), by theme, by date; `?class=NN` shows one class's words,
+// `?list=KEY` one test word register (kind 'test', e.g. pt3-1011: the 10/11 Practice Test III words).
 // 已掌握 ticks are saved on the server by headword, so the same word is ticked everywhere.
 // Copy and Download give the unchecked single words, one per line (扇贝 takes single words only).
 (function () {
@@ -8,7 +9,8 @@
   var tokenKey = 'thomas-portal-session-v1', returnKey = 'thomas-words-return', viewKey = 'thomas-words-view';
   var app = document.querySelector('[data-words-app]'), intro = document.querySelector('[data-words-intro]');
   var params = new URLSearchParams(location.search), qa = params.get('qa') === '1';
-  var S = { units: [], themes: [], lists: [], known: new Set(), view: 'unit', query: '', unchecked: false, classNo: params.get('class') || '', open: new Set(), shown: new Set() };
+  var S = { units: [], themes: [], lists: [], known: new Set(), view: 'unit', query: '', unchecked: false, classNo: params.get('class') || '', listKey: params.get('list') || '', open: new Set(), shown: new Set() };
+  var single = function () { return S.classNo || S.listKey; };
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function token() { var t = ''; ['localStorage', 'sessionStorage'].some(function (k) { try { t = window[k].getItem(tokenKey) || ''; } catch (e) {} return !!t; }); return t; }
@@ -26,11 +28,16 @@
 
   var unitById = function (id) { return S.units.filter(function (u) { return u.id === id; })[0] || { id: id, kind: 'theme', title: id, zh: '' }; };
   var unitLabel = function (u) { return (u.kind === 'type' ? '题型词' : '主题词') + ' · ' + u.title + (u.zh ? ' ' + u.zh : ''); };
-  var classList = function () { return S.lists.filter(function (l) { return String(l.classNo) === String(Number(S.classNo)); })[0]; };
+  var classList = function () {
+    if (S.listKey) return S.lists.filter(function (l) { return l.kind === 'test' && l.key === S.listKey; })[0];
+    return S.lists.filter(function (l) { return l.kind !== 'test' && String(l.classNo) === String(Number(S.classNo)); })[0];
+  };
+  // A class list is labelled by its class number; a test register by its tag (e.g. Practice Test III).
+  var listTag = function (l) { return (l.kind === 'test' ? l.tag : 'Class ' + pad(l.classNo)) + ' · ' + shortDate(l.date); };
 
   // Groups for the current view. Unit and theme views show each headword once and name every class it came from.
   function groups() {
-    if (S.classNo) { var one = classList(); return one ? [dateGroup(one)] : []; }
+    if (single()) { var one = classList(); return one ? [dateGroup(one)] : []; }
     if (S.view === 'date') return S.lists.slice().sort(function (a, b) { return b.date < a.date ? -1 : 1; }).map(dateGroup);
     var keyOf = S.view === 'unit' ? function (w) { return w.unit; } : function (w) { return w.theme; };
     var order = S.view === 'unit' ? S.units.map(function (u) { return u.id; }) : S.themes.slice();
@@ -39,7 +46,7 @@
       l.words.forEach(function (w) {
         var k = keyOf(w), g = byKey[k] || (byKey[k] = {}), item = seen[k + '|' + w.id];
         if (!item) { item = seen[k + '|' + w.id] = { w: w, classes: [] }; g[w.id] = item; }
-        if (!item.classes.some(function (c) { return c.classNo === l.classNo; })) item.classes.push({ classNo: l.classNo, date: l.date });
+        if (!item.classes.some(function (c) { return c.id === l.id; })) item.classes.push({ id: l.id, label: listTag(l) });
       });
     });
     Object.keys(byKey).forEach(function (k) { if (order.indexOf(k) < 0) order.push(k); });
@@ -50,7 +57,7 @@
     });
   }
   function dateGroup(l) {
-    return { key: 'date:' + l.id, title: 'Class ' + pad(l.classNo) + ' · ' + shortDate(l.date) + ' · ' + l.title, items: l.words.map(function (w) { return { w: w, classes: [] }; }) };
+    return { key: 'date:' + l.id, title: listTag(l) + ' · ' + l.title, items: l.words.map(function (w) { return { w: w, classes: [] }; }) };
   }
   function matches(item) {
     var w = item.w;
@@ -61,8 +68,8 @@
 
   function row(item) {
     var w = item.w, known = S.known.has(w.id), zhOpen = S.shown.has(w.id);
-    var tags = S.view === 'date' || S.classNo ? '<span class="word-tag">' + esc(unitById(w.unit).title) + '</span>'
-      : item.classes.map(function (c) { return '<span class="word-tag">Class ' + pad(c.classNo) + ' · ' + shortDate(c.date) + '</span>'; }).join('');
+    var tags = S.view === 'date' || single() ? '<span class="word-tag">' + esc(unitById(w.unit).title) + '</span>'
+      : item.classes.map(function (c) { return '<span class="word-tag">' + esc(c.label) + '</span>'; }).join('');
     return '<li class="word-row' + (known ? ' is-known' : '') + '">' +
       '<label class="word-check"><input type="checkbox" data-known="' + esc(w.id) + '"' + (known ? ' checked' : '') + ' aria-label="已掌握 ' + esc(w.word) + '"><span>已掌握</span></label>' +
       '<div class="word-body"><p class="word-head"><strong lang="en">' + esc(w.word) + '</strong>' + (w.pos ? ' <span class="word-pos">' + esc(w.pos) + '</span>' : '') + '</p>' +
@@ -75,7 +82,7 @@
   function groupHtml(g) {
     var visible = g.items.filter(matches), checked = g.items.filter(function (i) { return S.known.has(i.w.id); }).length;
     if ((S.query || S.unchecked) && !visible.length) return '';
-    var open = S.classNo || S.query || S.open.has(g.key) ? ' open' : '';
+    var open = single() || S.query || S.open.has(g.key) ? ' open' : '';
     return '<details class="word-group" data-group="' + esc(g.key) + '"' + open + '><summary><span class="word-group-title">' + esc(g.title) + '</span><small>' + g.items.length + ' words' + (checked ? ' · 已掌握 ' + checked : '') + '</small></summary>' +
       '<div class="word-group-body"><div class="word-actions">' +
       '<button class="button button-secondary" type="button" data-checkall="' + esc(g.key) + '"' + (checked === g.items.length ? ' disabled' : '') + '>Check all<small>全部勾选</small></button>' +
@@ -88,19 +95,19 @@
 
   function listsHtml() {
     var all = groups(), html = all.map(groupHtml).join('');
-    if (S.classNo && !all.length) return '<p class="empty-state">这节课没有单词表。</p>';
+    if (single() && !all.length) return '<p class="empty-state">' + (S.listKey ? '没有这个单词表。' : '这节课没有单词表。') + '</p>';
     return html || '<p class="empty-state">' + (S.query ? '没有找到这个词。' : '没有需要复习的单词了。') + '</p>';
   }
   function meter() {
-    var ids = {}, one = S.classNo && classList(); (one ? [one] : S.lists).forEach(function (l) { l.words.forEach(function (w) { ids[w.id] = true; }); });
+    var ids = {}, one = single() && classList(); (one ? [one] : S.lists).forEach(function (l) { l.words.forEach(function (w) { ids[w.id] = true; }); });
     var total = Object.keys(ids).length, known = Object.keys(ids).filter(function (id) { return S.known.has(id); }).length;
     return '共 ' + total + ' 个单词 · 已掌握 ' + known + ' 个';
   }
 
   function render() {
-    var one = S.classNo && classList();
-    if (one) intro.innerHTML = '<p class="eyebrow">Class ' + pad(one.classNo) + ' · ' + esc(one.date) + '</p><h1>Class Words · ' + esc(one.title) + '</h1><p><a href="../' + esc(one.date) + '/">← 返回 ' + esc(shortDate(one.date).replace('/', '')) + ' 课堂</a> · <a href="./">查看全部单词 →</a></p>';
-    var tabs = S.classNo ? '' : '<div class="word-tabs" role="group" aria-label="查看方式">' + [['unit', 'By unit 按单元'], ['theme', 'By theme 按主题'], ['date', 'By date 按日期']].map(function (t) {
+    var one = single() && classList(), page = one && (one.page || one.date);
+    if (one) intro.innerHTML = '<p class="eyebrow">' + (one.kind === 'test' ? esc(one.tag) : 'Class ' + pad(one.classNo)) + ' · ' + esc(one.date) + '</p><h1>' + (one.kind === 'test' ? 'Test Words · ' : 'Class Words · ') + esc(one.title) + '</h1><p><a href="../' + esc(page) + '/">← 返回 ' + esc(shortDate(page).replace('/', '')) + ' 课堂</a> · <a href="./">查看全部单词 →</a></p>';
+    var tabs = single() ? '' : '<div class="word-tabs" role="group" aria-label="查看方式">' + [['unit', 'By unit 按单元'], ['theme', 'By theme 按主题'], ['date', 'By date 按日期']].map(function (t) {
       return '<button type="button" class="word-tab" data-view="' + t[0] + '" aria-pressed="' + (S.view === t[0]) + '">' + t[1] + '</button>';
     }).join('') + '</div>';
     app.innerHTML = tabs + '<div class="word-tools"><label class="word-search">搜索<input type="search" data-search placeholder="Search words / 中文 / 例句" value="' + esc(S.query) + '"></label>' +
@@ -136,7 +143,7 @@
   });
   app.addEventListener('toggle', function (e) {
     var d = e.target.closest && e.target.closest('details[data-group]');
-    if (!d || S.query || S.classNo) return;
+    if (!d || S.query || single()) return;
     if (d.open) S.open.add(d.dataset.group); else S.open.delete(d.dataset.group);
   }, true);
   app.addEventListener('change', function (e) {
@@ -174,15 +181,15 @@
 
   function start() {
     if (document.body.dataset.access !== 'granted') {
-      // The sign-in returns to the page path only; keep ?class= for the way back.
+      // The sign-in returns to the page path only; keep ?class= / ?list= for the way back.
       try { if (location.search) sessionStorage.setItem(returnKey, location.search); } catch (e) {}
       return;
     }
-    try { var back = sessionStorage.getItem(returnKey); sessionStorage.removeItem(returnKey); if (back && !location.search) { history.replaceState(null, '', location.pathname + back); params = new URLSearchParams(back); S.classNo = params.get('class') || ''; qa = params.get('qa') === '1'; } } catch (e) {}
+    try { var back = sessionStorage.getItem(returnKey); sessionStorage.removeItem(returnKey); if (back && !location.search) { history.replaceState(null, '', location.pathname + back); params = new URLSearchParams(back); S.classNo = params.get('class') || ''; S.listKey = params.get('list') || ''; qa = params.get('qa') === '1'; } } catch (e) {}
     try { var v = localStorage.getItem(viewKey); if (['unit', 'theme', 'date'].indexOf(v) >= 0) S.view = v; } catch (e) {}
     request('wordsList').then(function (r) {
       S.units = r.units; S.themes = r.themes; S.lists = r.lists; S.known = new Set(r.known);
-      if (S.classNo) document.title = 'Class ' + pad(S.classNo) + ' Words | Thomas SSAT';
+      if (S.listKey) { var t = classList(); if (t) document.title = t.tag + ' Words | Thomas SSAT'; } else if (S.classNo) document.title = 'Class ' + pad(S.classNo) + ' Words | Thomas SSAT';
       render();
     }).catch(function (e) {
       app.innerHTML = '<p class="empty-state">' + esc(e.message || '暂时无法读取单词。') + ' <a href="' + endpoint + '?view=portal-login&amp;next=words%2F">重新进入学习空间</a></p>';
