@@ -14,7 +14,9 @@
   function fetchDetail(i){var k=cacheKey(i);if(detailCache[k])return Promise.resolve(detailCache[k]);return request('mistakeReviewDetail',ref(i)).then(function(d){detailCache[k]=d;return d;});}
   function fetchPage(i,pageKey){var k=cacheKey(i)+'|'+pageKey;if(pageCache[k])return Promise.resolve(pageCache[k]);return request('mistakeReviewPage',Object.assign(ref(i),{pageKey:pageKey})).then(function(r){pageCache[k]=r;return r;});}
   var requestQueue=[],activeRequests=0;
-  function request(action,p){return new Promise(function(resolve,reject){requestQueue.push(function(){return sendRequest(action,p).then(resolve,reject);});drainRequests();});}
+  var ORIGIN_ACTIONS={mistakeReviewRedo:1,mistakeReviewPractice:1,mistakeReviewFlash:1};
+  function withOrigin(action,p){if(!ORIGIN_ACTIONS[action]||!window.PortalSubmissionOrigin)return Promise.resolve(p);return window.PortalSubmissionOrigin.collect().then(function(o){p=p||{};if(o)p.submissionOrigin=o;return p;});}
+  function request(action,p){return withOrigin(action,p).then(function(p){return new Promise(function(resolve,reject){requestQueue.push(function(){return sendRequest(action,p).then(resolve,reject);});drainRequests();});});}
   function drainRequests(){while(activeRequests<4&&requestQueue.length){activeRequests++;requestQueue.shift()().finally(function(){activeRequests--;drainRequests();});}}
   function sendRequest(action,p){p=p||{};p.action=action;if(token)p.token=token;
     var controller=new AbortController(),deadline=setTimeout(function(){controller.abort();},45000);
@@ -109,6 +111,7 @@
   try{expandAll=localStorage.getItem(expandKey)==='1';}catch(e){}updateExpandToggle();
   document.querySelector('[data-refresh-mistakes]').addEventListener('click',load);
   document.querySelector('[data-review-lock]').addEventListener('click',lock);
+  if (window.PortalSubmissionOrigin) window.PortalSubmissionOrigin.warm();
   try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
   if(token){workspace.hidden=false;login.hidden=true;load();}else{login.hidden=false;workspace.hidden=true;}
 }());

@@ -14,7 +14,9 @@
   function cacheKey(i){return [i.assignmentId,i.saveId,i.receiptTime,i.itemId].join('|');}
   function error(node,e){node.textContent=e&&e.message||'暂时未能完成，请重试。';}
   var requestQueue=[],activeRequests=0;
-  function request(action,p){return new Promise(function(resolve,reject){requestQueue.push(function(){return sendRequest(action,p).then(resolve,reject);});drainRequests();});}
+  var ORIGIN_ACTIONS={mistakeReviewRedo:1,mistakeReviewPractice:1,mistakeReviewFlash:1};
+  function withOrigin(action,p){if(!ORIGIN_ACTIONS[action]||!window.PortalSubmissionOrigin)return Promise.resolve(p);return window.PortalSubmissionOrigin.collect().then(function(o){p=p||{};if(o)p.submissionOrigin=o;return p;});}
+  function request(action,p){return withOrigin(action,p).then(function(p){return new Promise(function(resolve,reject){requestQueue.push(function(){return sendRequest(action,p).then(resolve,reject);});drainRequests();});});}
   function drainRequests(){while(activeRequests<4&&requestQueue.length){activeRequests++;requestQueue.shift()().finally(function(){activeRequests--;drainRequests();});}}
   function sendRequest(action,p){p=p||{};p.action=action;if(token)p.token=token;
     var controller=new AbortController(),deadline=setTimeout(function(){controller.abort();},60000);
@@ -116,6 +118,7 @@
   login.addEventListener('submit',function(e){e.preventDefault();var input=login.querySelector('input'),button=login.querySelector('button'),msg=$('[data-login-status]'),password=input.value;button.disabled=true;msg.textContent='正在打开…';
     request('mistakeReviewLogin',{password:password}).then(function(r){session(r.token);input.value='';msg.textContent='';return load();}).catch(function(e){error(msg,e);}).finally(function(){password='';button.disabled=false;});});
   $('[data-practice-lock]').addEventListener('click',lock);
+  if (window.PortalSubmissionOrigin) window.PortalSubmissionOrigin.warm();
   try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
   if(token){workspace.hidden=false;login.hidden=true;showOnly(picker);load();}else{login.hidden=false;workspace.hidden=true;}
 }());
