@@ -15,6 +15,7 @@
   var sourceIndexKey = 'thomas-ssat-submission-sources-v1';
   var correctionMode = false;
   var correctionIds = [];
+  var sessionExpired = false;
   var feedbackPanel = null;
   var feedbackStatus = null;
   var feedbackButton = null;
@@ -28,7 +29,7 @@
   function writeState(value) { localStorage.setItem(stateKey, JSON.stringify(value)); }
   function collectState(ids) { var selectedIds = ids || assignment.items.map(function (item) { return item.id; }); var answers = {}; assignment.items.forEach(function (item) { if (selectedIds.indexOf(item.id) === -1) return; var selected = document.querySelector('input[name="' + item.id + '"]:checked'); var evidence = document.querySelector('[data-evidence-for="' + item.id + '"]'); answers[item.id] = { choice: selected ? selected.value : '', evidence: evidence ? evidence.value.trim() : '' }; }); return answers; }
   function answeredCount(answers, ids) { var selectedIds = ids || assignment.items.map(function (item) { return item.id; }); return selectedIds.filter(function (id) { return answers[id] && answers[id].choice; }).length; }
-  function showStatus(message) { if (status) status.textContent = message; }
+  function showStatus(message) { if (status) status.textContent = sessionExpired ? '登录已过期，请刷新页面重新登录。答案已保存在当前设备。' : message; }
   function formatReceipt(value) { var parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '已记录' : parsed.toLocaleString('zh-CN'); }
 
   function ensureCorrectionActions() {
@@ -169,7 +170,7 @@
   function persistCorrectionLocal() { var state = readState(); state.correctionAnswers = collectState(correctionIds); writeState(state); return state.correctionAnswers; }
 
   function originFor(action) { return (action === 'submit' || action === 'submitCorrection') && window.PortalSubmissionOrigin ? window.PortalSubmissionOrigin.collect() : Promise.resolve(null); }
-  function send(action, answers) { if (!assignment.endpoint) return Promise.resolve({ ok: false, localOnly: true }); return originFor(action).then(function (origin) { var body = { action: action, assignmentId: assignment.id, saveId: saveId(), actor: 'Thomas', environment: 'production', answers: answers || {} }; if (origin) body.submissionOrigin = origin; return fetch(assignment.endpoint, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }); }).then(function (response) { return response.json(); }); }
+  function send(action, answers) { if (!assignment.endpoint) return Promise.resolve({ ok: false, localOnly: true }); return originFor(action).then(function (origin) { var body = { action: action, assignmentId: assignment.id, saveId: saveId(), actor: 'Thomas', environment: 'production', answers: answers || {} }; if (origin) body.submissionOrigin = origin; if (window.ThomasPortalToken) body.token = window.ThomasPortalToken(); return fetch(assignment.endpoint, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }); }).then(function (response) { return response.json(); }).then(function (result) { if (result && result.ok === false && /登录已过期/.test(result.error || '')) { sessionExpired = true; showStatus(''); } return result; }); }
   function saveDraft(silent) { var answers = persistLocal(false, ''); if (!silent) showStatus('正在保存…'); return send('saveDraft', answers).then(function (result) { if (result.ok) showStatus('进度已保存 · 已完成 ' + answeredCount(answers) + ' / ' + assignment.items.length + ' 题。'); else if (!silent) showStatus('已保存在当前设备，可继续作答。'); return result; }).catch(function () { if (!silent) showStatus('已保存在当前设备，可继续作答。'); return { ok: false }; }); }
 
   function disableAll() { document.querySelectorAll('[data-assignment-form] input, [data-assignment-form] textarea').forEach(function (control) { control.disabled = true; }); document.querySelectorAll('.question-card').forEach(function (card) { card.setAttribute('aria-disabled', 'true'); card.classList.remove('correction-required'); }); }

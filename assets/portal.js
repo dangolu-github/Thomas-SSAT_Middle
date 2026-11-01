@@ -22,6 +22,7 @@
   function sessionClear() { memoryToken='';['localStorage','sessionStorage'].forEach(function(name){try{window[name].removeItem(portalSessionKey);window[name].removeItem('thomas-ssat-access');}catch(e){}}); }
   function freshPortalToken(token) { try { var p=JSON.parse(atob(token.split('.')[0].replace(/-/g,'+').replace(/_/g,'/')));return p.aud==='thomas-learner-portal'&&p.expiresAt>Date.now()&&/^[A-Za-z0-9_-]+\.[a-f0-9]{64}$/.test(token); } catch(e){return false;} }
   function currentPortalToken() { return [memoryToken,sessionGet('localStorage'),sessionGet('sessionStorage')].filter(freshPortalToken)[0]||''; }
+  window.ThomasPortalToken = currentPortalToken;
   function setupAccessGate() {
     var fragment=new URLSearchParams(location.hash.slice(1));
     if(fragment.get('thomas-logout')==='1'){sessionClear();history.replaceState(null,'',location.pathname+location.search);}

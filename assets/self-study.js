@@ -119,7 +119,8 @@
         saveId: saveId(),
         actor: 'Thomas',
         environment: /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname) ? 'qa' : 'production',
-        completedTaskIds: ids
+        completedTaskIds: ids,
+        token: window.ThomasPortalToken ? window.ThomasPortalToken() : ''
       })
     }).then(function (response) { return response.json(); });
   }
