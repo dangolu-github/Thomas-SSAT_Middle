@@ -8,7 +8,53 @@
 .method-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}.method-cell{border-top:5px solid var(--gold);background:var(--white);border-radius:14px;padding:14px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.method-cell b{display:block;color:var(--navy);font-family:Georgia,serif;font-size:1.1rem}.cluster{margin-top:24px}.cluster-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.cluster-title h3{margin:0}.cluster-title span{color:var(--muted)}.pos{display:inline-block;margin-left:6px;color:var(--red);font-size:.75rem;font-weight:800;text-transform:uppercase}.check-card{border:1px solid var(--line);border-left:6px solid var(--red);border-radius:16px;padding:18px;margin:18px 0;background:#fff}.check-card.model{border-left-color:var(--green);background:#f4f8f3}.check-label{color:var(--red);font-weight:850;font-size:.82rem;letter-spacing:.06em}.check-card.model .check-label{color:var(--green)}.answer-space{min-height:36px;border-bottom:1px solid #9d927f;margin:8px 0}.analysis-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.analysis-node{border:1px solid var(--line);background:var(--white);border-radius:14px;padding:14px}.analysis-node strong{color:var(--red)}.relation-block{border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0}.relation-block h3{margin-top:0}.teacher-note{border-left:4px solid var(--red);background:#faece9;padding:12px 14px;border-radius:10px}.zh-explain{font-size:1.02rem;color:#394955}.compact-list li{margin:.35em 0}.question-stem{font-family:Georgia,serif;color:var(--navy);font-weight:750;font-size:1.1rem}.vocab-card .example{color:#53616a}.vocab-card .zh-button{margin-top:8px;border:1px solid var(--blue);border-radius:999px;background:white;color:var(--blue);padding:5px 10px;cursor:pointer;font:inherit;font-size:.82rem}.source-table code{white-space:normal}
 @media(max-width:760px){.method-map,.analysis-map{grid-template-columns:1fr}.check-card,.relation-block{padding:15px}.vocab-grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}}
 @media print{.zh-button,.answer-toggle{display:none!important}.method-map,.analysis-map{grid-template-columns:repeat(2,1fr)}.check-card,.relation-block{break-inside:avoid}.vocab-card .print-cn{display:block}}
-</style></head><body data-page="home" data-access="required"><main class="page">
+</style><style>
+/* responsive-retrofit:core-20261104 */
+/* Window adaptation, screen only: a learner page follows the current window width and height,
+   including resizing an open window and browser zoom.
+   Reference: student-learning-portal-workflow/references/responsive-student-pages.md
+   Nothing here changes content, prompt or option order, question ids, learner answers, storage keys,
+   scoring, release gates, theme colours or the print rules: every rule is inside @media screen and
+   only decides how an existing box is sized. No page-wide transform, zoom or overflow hiding, and
+   nothing changes what is hidden or shown. */
+@media screen {
+  /* A long identifier, file name, URL or code token breaks only when it cannot fit; ordinary
+     words stay whole, in cells as well as in text. */
+  code, kbd, samp, var, a[href]:not([href^="#"]) { overflow-wrap: anywhere; }
+  p, li, dd, dt, td, th, figcaption, blockquote, summary, label { overflow-wrap: break-word; }
+  pre:not([hidden]) { max-width: 100%; overflow-x: auto; }
+
+  /* Figures and embeds stay inside their own container. Annotation ink is drawn at the coordinates
+     it was authored with, so <svg> and <canvas> are deliberately left out of this rule. */
+  img:not([hidden]), picture, video, iframe, embed, object { max-width: 100%; }
+  img:not([hidden]), video { height: auto; }
+
+  /* A table fits its pane: the columns wrap instead of widening the page. A table that is set to
+     span its pane still spans it, so nothing looks different where there was already room. */
+  table { max-width: 100%; }
+
+  /* Fields and buttons stay inside the window and keep a usable size. */
+  input:not([hidden]), select:not([hidden]), textarea:not([hidden]), button:not([hidden]) { max-width: 100%; }
+
+  /* A paper replica or ink overlay is positioned by coordinates inside its own scrolling frame:
+     it must keep its authored width. */
+  #ann-page, #ann-page *, #ann-stage, [id^="html-ink"], [id^="html-ink"] * { max-width: none; }
+}
+
+/* In a narrow window a wide table cannot be made legible by wrapping alone, so the sideways
+   scrolling belongs to the table's own box: neither the pane nor the page widens.
+   :not([hidden]) so that a table the page keeps hidden stays hidden. */
+@media screen and (max-width: 820px) {
+  table:not([hidden]) {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+}
+</style>
+</head><body data-page="home" data-access="required"><main class="page">
 <div class="toolbar"><button id="print-page" type="button">打印课堂笔记</button></div>
 <header class="hero"><div class="eyebrow">Thomas · SSAT Middle Level · Class 04</div><h1>Maps of Belonging</h1><p>身份、迁移与归属：从 Synonyms 词义边界到主题词汇与阅读。</p><div class="meta"><span class="pill">2026-08-26</span><span class="pill">Verbal + Reading</span><span class="pill">中文讲解 · 英文题目</span></div></header>
 
