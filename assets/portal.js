@@ -100,7 +100,7 @@
       var id = button.dataset.sectionToggle;
       var body = document.getElementById(id);
       if (!body) return;
-      var open = state[id] !== false;
+      var open = Object.prototype.hasOwnProperty.call(state, id) ? state[id] !== false : button.dataset.defaultOpen !== 'false';
       body.hidden = !open;
       button.setAttribute('aria-expanded', String(open));
       button.textContent = open ? '收起' : '展开';
