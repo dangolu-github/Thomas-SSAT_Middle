@@ -103,7 +103,7 @@
       var resultLabel = item.result === 'correct' ? '正确' : item.result === 'wrong' ? '需要复盘' : '未作答';
       if (assignmentItem && assignmentItem.prompt) appendLine(card, '题目：', assignmentItem.prompt);
       appendLine(card, '你的选择：', item.learnerChoice ? item.learnerChoice + (item.learnerText ? ' · ' + item.learnerText : '') : '未作答');
-      appendLine(card, '正确答案：', item.correctAnswer + (item.correctText ? ' · ' + item.correctText : ''));
+      if (item.correctAnswer) appendLine(card, '正确答案：', item.correctAnswer + (item.correctText ? ' · ' + item.correctText : ''));
       appendLine(card, '结果：', resultLabel);
       if (item.reasoning) appendLine(card, '解题思路：', item.reasoning);
       if (item.closestTrap) appendLine(card, '最接近的干扰项：', item.closestTrap);
@@ -124,7 +124,7 @@
       feedbackContent.append(empty);
     }
     feedbackContent.hidden = false;
-    feedbackStatus.textContent = reviewCount ? (data.explanationsAvailable ? '已显示 ' + reviewCount + ' 道错题、正确答案与讲解。' : '已显示 ' + reviewCount + ' 道错题及正确答案。') : '本次没有错题。';
+    feedbackStatus.textContent = reviewCount ? (data.explanationsAvailable ? '已显示 ' + reviewCount + ' 道错题、正确答案与讲解。' : '已显示 ' + reviewCount + (data.keysShown === false ? ' 道错题。' : ' 道错题及正确答案。')) : '本次没有错题。';
     feedbackButton.hidden = true;
   }
 
@@ -142,7 +142,7 @@
       loadFeedback();
     } else {
       feedbackButton.hidden = true;
-      feedbackStatus.textContent = '错题和正确答案暂时不可查看。';
+      feedbackStatus.textContent = data.held ? (data.heldMessage || '已提交，等待老师批改。') : '错题和正确答案暂时不可查看。';
     }
   }
 
@@ -153,7 +153,7 @@
     feedbackStatus.textContent = '正在载入错题与正确答案…';
     send('getFeedback', {}).then(function (data) {
       if (!data.ok || !data.available) {
-        feedbackStatus.textContent = '错题和正确答案暂时不可查看。';
+        feedbackStatus.textContent = data.held ? (data.heldMessage || '已提交，等待老师批改。') : '错题和正确答案暂时不可查看。';
         feedbackButton.hidden = true;
         return;
       }

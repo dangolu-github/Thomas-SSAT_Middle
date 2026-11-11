@@ -112,6 +112,7 @@
   document.querySelector('[data-refresh-mistakes]').addEventListener('click',load);
   document.querySelector('[data-review-lock]').addEventListener('click',lock);
   if (window.PortalSubmissionOrigin) window.PortalSubmissionOrigin.warm();
-  try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
+  // The portal sign-in (remembered per browser) also opens the mistake book, so it does not ask for the password again.
+  try{token=localStorage.getItem(tokenKey)||(window.ThomasPortalToken&&window.ThomasPortalToken())||'';}catch(e){}
   if(token){workspace.hidden=false;login.hidden=true;load();}else{login.hidden=false;workspace.hidden=true;}
 }());

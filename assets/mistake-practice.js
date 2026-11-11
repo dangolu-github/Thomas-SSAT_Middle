@@ -122,6 +122,7 @@
     request('mistakeReviewLogin',{password:password}).then(function(r){session(r.token);input.value='';msg.textContent='';return load();}).catch(function(e){error(msg,e);}).finally(function(){password='';button.disabled=false;});});
   $('[data-practice-lock]').addEventListener('click',lock);
   if (window.PortalSubmissionOrigin) window.PortalSubmissionOrigin.warm();
-  try{token=localStorage.getItem(tokenKey)||'';}catch(e){}
+  // The portal sign-in (remembered per browser) also opens the mistake book, so it does not ask for the password again.
+  try{token=localStorage.getItem(tokenKey)||(window.ThomasPortalToken&&window.ThomasPortalToken())||'';}catch(e){}
   if(token){workspace.hidden=false;login.hidden=true;showOnly(picker);load();}else{login.hidden=false;workspace.hidden=true;}
 }());
